@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INCA IMPORT — Calculateur CRR Réunion</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f7ff;--white:#fff;--border:#e2e8f8;--border2:#c7d2f0;
+  --blue:#3b5bdb;--blue2:#4c6ef5;--blue3:#748ffc;--blue-soft:#eef2ff;
+  --green:#0ca678;--green2:#12b886;--green-soft:#e6fcf5;
+  --orange:#e8590c;--orange-soft:#fff4e6;
+  --amber:#e67700;--amber-soft:#fff8e1;
+  --red:#e03131;--red-soft:#fff5f5;
+  --purple:#7048e8;--purple-soft:#f3f0ff;
+  --teal:#0891b2;--teal-soft:#ecfeff;
+  --text:#0f172a;--text2:#334155;--text3:#64748b;--text4:#94a3b8;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --r:12px;--r2:16px;
+  --sh:0 1px 3px rgba(59,91,219,.08),0 4px 16px rgba(59,91,219,.06);
+  --sh2:0 2px 12px rgba(59,91,219,.14),0 8px 32px rgba(59,91,219,.08);
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+
+/* HEADER */
+.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(59,91,219,.06)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.logo{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-weight:800;font-size:11px;letter-spacing:2px;padding:6px 12px;border-radius:8px;text-transform:uppercase}
+.hdr-title{font-size:17px;font-weight:700}
+.hdr-sub{font-size:11px;color:var(--text3);margin-top:1px;font-weight:500}
+.src-badge{background:var(--amber-soft);border:1px solid rgba(230,119,0,.25);padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;color:var(--amber);letter-spacing:.5px}
+
+/* MAIN LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:2rem}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:start}
+
+/* SECTION */
+.sec{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;display:flex;align-items:center;gap:8px}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec-ico{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem;box-shadow:var(--sh);margin-bottom:1.25rem}
+.card-title{font-size:14px;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.card-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ic-blue{background:var(--blue-soft)}
+.ic-green{background:var(--green-soft)}
+.ic-purple{background:var(--purple-soft)}
+.ic-amber{background:var(--amber-soft)}
+.ic-teal{background:var(--teal-soft)}
+
+/* INPUT GRID */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.input-grid.three{grid-template-columns:1fr 1fr 1fr}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
+.field-hint{font-size:10px;color:var(--text4);font-weight:500;margin-top:-2px}
+.inp-wrap{position:relative;display:flex;align-items:center}
+.inp-wrap input,.inp-wrap select{
+  width:100%;background:var(--bg);border:1.5px solid var(--border);
+  border-radius:9px;padding:10px 14px;
+  font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text);
+  outline:none;transition:all .2s;
+}
+.inp-wrap.has-suffix input{padding-right:44px}
+.inp-wrap input:focus,.inp-wrap select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(59,91,219,.1)}
+.inp-suffix{position:absolute;right:12px;font-size:11px;font-weight:700;color:var(--text4);pointer-events:none;font-family:var(--mono)}
+.inp-wrap input[disabled]{color:var(--text3);background:var(--border);cursor:not-allowed}
+
+/* RANGE */
+.range-wrap{display:flex;align-items:center;gap:10px}
+input[type=range]{-webkit-appearance:none;flex:1;height:6px;border-radius:3px;background:var(--border2);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));cursor:pointer;box-shadow:0 2px 6px rgba(59,91,219,.3)}
+.range-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--blue);min-width:48px;text-align:right}
+
+/* TAXE SUCRE SELECTOR */
+.sucre-btns{display:flex;gap:6px;flex-wrap:wrap}
+.sucre-btn{padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+.sucre-btn:hover{border-color:var(--blue3);color:var(--blue)}
+.sucre-btn.active{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+
+/* RESULTS PANEL */
+.result-panel{background:linear-gradient(160deg,#1e3a8a 0%,var(--blue) 40%,var(--blue2) 100%);border-radius:var(--r2);padding:1.5rem;color:#fff;position:sticky;top:84px;box-shadow:0 8px 40px rgba(59,91,219,.35)}
+
+.crr-main{text-align:center;padding:1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:1.25rem}
+.crr-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:.5rem}
+.crr-value{font-family:var(--mono);font-size:52px;font-weight:700;line-height:1;letter-spacing:-1px}
+.crr-unit{font-size:13px;opacity:.7;margin-top:6px;font-weight:600}
+.crr-margin{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700}
+
+.detail-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:1.25rem}
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.08);transition:background .2s}
+.detail-row:hover{background:rgba(255,255,255,.14)}
+.detail-row.total-row{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2)}
+.detail-row.hl-row{background:rgba(255,184,0,.15);border:1px solid rgba(255,184,0,.2)}
+.d-label{font-size:11px;font-weight:600;opacity:.85;display:flex;align-items:center;gap:6px}
+.d-label .tag{font-size:8px;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,.2);letter-spacing:.5px;text-transform:uppercase;opacity:1}
+.d-value{font-family:var(--mono);font-size:12px;font-weight:700}
+.d-pct{font-size:9px;opacity:.6;margin-left:4px}
+
+.waterfall{margin-bottom:1.25rem}
+.wf-bar-wrap{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.wf-label{font-size:9px;opacity:.7;font-weight:600;letter-spacing:.3px;min-width:100px;text-align:right}
+.wf-bar{height:8px;border-radius:4px;min-width:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.wf-val{font-family:var(--mono);font-size:9px;font-weight:700;opacity:.85}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.kpi{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 8px;text-align:center}
+.kpi-v{font-family:var(--mono);font-size:16px;font-weight:700;line-height:1;margin-bottom:3px}
+.kpi-l{font-size:8px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;opacity:.65}
+
+.calc-btn{width:100%;padding:13px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-bottom:1.25rem}
+.calc-btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
+
+/* SOURCE NOTE */
+.source-note{background:var(--amber-soft);border:1px solid rgba(230,119,0,.2);border-radius:10px;padding:10px 14px;font-size:10px;color:var(--amber);font-weight:600;line-height:1.6}
+.source-note strong{display:block;margin-bottom:3px;font-size:11px}
+
+/* BREAKDOWN TABLE */
+.breakdown{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:.75rem}
+.bt-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px}
+.bt-row:last-child{border-bottom:none}
+.bt-row.header{background:var(--border);font-weight:700;font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
+.bt-row.subtotal{background:var(--blue-soft);font-weight:700}
+.bt-row.grand{background:var(--blue);color:#fff;font-weight:800}
+.bt-label{font-weight:500}
+.bt-base{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:right}
+.bt-val{font-family:var(--mono);font-size:12px;font-weight:700;text-align:right}
+.bt-val.g{color:var(--green)}.bt-val.b{color:var(--blue)}.bt-val.o{color:var(--orange)}.bt-val.p{color:var(--purple)}
+.bt-val.wh{color:#fff}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">INCA IMPORT</div>
+    <div>
+      <div class="hdr-title">Calculateur CRR Réunion</div>
+      <div class="hdr-sub">Coût de revient complet EXW/FOB → La Possession</div>
+    </div>
+  </div>
+  <div class="src-badge">📄 Basé sur cotation DSG Transit Repiquet MI251003405</div>
+</div>
+
+<div class="wrap">
+<div class="grid">
+
+<!-- LEFT: INPUTS -->
+<div>
+
+<!-- 1. PRODUIT -->
+<div class="card">
+  <div class="card-title"><div class="card-icon ic-blue">📦</div>Produit importé</div>
+  <div class="input-grid three">
+    <div class="field full">
+      <label>Nom du produit</label>
+      <div class="inp-wrap"><input type="text" id="prodNom" placeholder="ex: Monster Energy 500ml" oninput="calc()"></div>
+    </div>
+    <div class="field">
+      <label>Prix unitaire EXW / FOB €</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="prixUnit" value="0.77" step="0.001" oninput="calc()"><span class="inp-suffix">€</span></div>
+      <div class="field-hint">Prix départ entrepôt fournisseur</div>
+    </div>
+    <div class="field">
+      <label>Incoterm</label>
+      <div class="inp-wrap">
+        <select id="incoterm" onchange="calc()">
+          <option value="exw">EXW — Départ usine</option>
+          <option value="fca" selected>FCA — Franco transporteur</option>
+          <option value="fob">FOB — Franco à bord</option>
+          <option value="cif">CIF — Coût assurance fret</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Quantité totale (unités)</label>
+      <div class="inp-wrap"><input type="number" id="qteTotal" value="34560" oninput="calc()"></div>
+    </div>
+    <div class="field">
+      <label>Format produit</label>
+      <div class="inp-wrap">
+        <select id="format" onchange="updateSucreOptions()">
+          <option value="can500">Canette 500ml</option>
+          <option value="can355">Canette 355ml</option>
+          <option value="can330">Canette 330ml</option>
+          <option value="can250">Canette 250ml</option>
+          <option value="pet500">Bouteille PET 500ml</option>
+          <option value="pet250">Bouteille PET 250ml</option>
+          <option value="sachet">Sachet / snack solide</option>
+          <option value="autre">Autre / non soumis sucre</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Stickering étiquetage FR</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="sticker" value="0.05" step="0.01" oninput="calc()"><span class="inp-suffix">€/u</span></div>
+      <div class="field-hint">Inclus chez Dabex · 0 si déjà étiqueté FR</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. FRET -->
+<div class="card">
+  <div class="card-title"><div class="card-icon ic-teal">🚢</div>Fret maritime</div>
+  <div class="input-grid">
+    <div class="field">
+      <label>Type de conteneur</label>
+      <div class="inp-wrap">
+        <select id="ctnrType" onchange="setCtnrDefaults()">
+          <option value="40" selected>40' HC DRY</option>
+          <option value="20">20' DRY</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Coût fret maritime total €</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="fretTotal" value="3850" oninput="calc()"><span class="inp-suffix">€</span></div>
+      <div class="field-hint">FAK armateur (MSC / CMA CGM)</div>
+    </div>
+    <div class="field">
+      <label>Assurance transport</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="assurance" value="0" oninput="calc()" placeholder="Auto 0.65%"><span class="inp-suffix">€</span></div>
+      <div class="field-hint">0.65% × (val.merch + fret + 20%). Laisser 0 = auto</div>
+    </div>
+    <div class="field">
+      <label>Transport interne (EXW → FOB)</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="transInterne" value="0" oninput="calc()"><span class="inp-suffix">€</span></div>
+      <div class="field-hint">Si incoterm EXW uniquement</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. FRAIS DSG TRANSIT (préremplis cotation) -->
+<div class="card">
+  <div class="card-title"><div class="card-icon ic-amber">🏷</div>Frais transit & douane — <span style="font-size:12px;color:var(--amber);font-weight:600;margin-left:4px">DSG Transit Repiquet MI251003405</span></div>
+  <div style="background:var(--amber-soft);border:1px solid rgba(230,119,0,.15);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--amber);font-weight:600;margin-bottom:1rem">
+    ✓ Valeurs préremplies d'après ta cotation officielle du 29/10/2025 — valid. 31/12/2025 · 40' HC PDG → La Possession
+  </div>
+  <div class="input-grid three">
+    <div class="field">
+      <label>Acconnage (non taxable)</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="acconnage" value="693.40" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Frais de BL (non taxable)</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="fraisBL" value="95.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Prestation douane import</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="prestDouane" value="180.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Frais de dossier</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="fraisDossier" value="25.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>CIP & CID (5 pos. douane)</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="cipCid" value="30.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Livraison La Possession</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="livraison" value="306.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Crédit enlèvement maritime</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="creditEnlev" value="108.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Redevance marchandises V340</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="redevance" value="150.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>TVA sur frais taxables (2.1%)</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="tvaFrais" value="2.1" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TAXES RÉUNION -->
+<div class="card">
+  <div class="card-title"><div class="card-icon ic-purple">🏝</div>Taxes spécifiques Réunion</div>
+  <div class="input-grid">
+    <div class="field">
+      <label>Octroi de Mer V395</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="omRate" value="25.5" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
+      <div class="field-hint">25.5% sur valeur CAF (cotation DSG)</div>
+    </div>
+    <div class="field">
+      <label>Octroi de Mer Régional K949</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="omrRate" value="2.5" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
+      <div class="field-hint">2.5% — régional (cotation DSG)</div>
+    </div>
+    <div class="field">
+      <label>Droit de douane</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="droitDouane" value="9.6" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
+      <div class="field-hint">Sur valeur CAF · vérifier code NC</div>
+    </div>
+    <div class="field">
+      <label>TVA import autoliquidée</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="tvaImport" value="2.1" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
+      <div class="field-hint">2.1% Réunion (vs 20% métropole)</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. TAXE SUCRE -->
+<div class="card">
+  <div class="card-title"><div class="card-icon ic-green">🍬</div>Taxe sucre — Loi PLFSS 2025 (en vigueur mars 2025)</div>
+  <div class="field" style="margin-bottom:1rem">
+    <label>Teneur en sucre / édulcorant</label>
+    <div class="sucre-btns" id="sucreBtns">
+      <button class="sucre-btn" onclick="setSucre(0,'zero')">0 sucre<br><span style="font-size:9px;opacity:.7">€0/unit</span></button>
+      <button class="sucre-btn" onclick="setSucre(0.02,'faible')">≤5 kg/hl<br><span style="font-size:9px;opacity:.7">€0.020/500ml</span></button>
+      <button class="sucre-btn active" onclick="setSucre(0.105,'moyen')">5–8 kg/hl<br><span style="font-size:9px;opacity:.7">€0.105/500ml</span></button>
+      <button class="sucre-btn" onclick="setSucre(0.175,'fort')">{'>'} 8 kg/hl<br><span style="font-size:9px;opacity:.7">€0.175/500ml</span></button>
+      <button class="sucre-btn" onclick="setSucre(0.018,'edulc')">Édulcorant seul<br><span style="font-size:9px;opacity:.7">€0.018/500ml</span></button>
+    </div>
+  </div>
+  <div class="input-grid">
+    <div class="field">
+      <label>Taxe sucre par unité €</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="taxeSucreUnit" value="0.105" step="0.001" oninput="calc()"><span class="inp-suffix">€/u</span></div>
+      <div class="field-hint">Modifie automatiquement selon format</div>
+    </div>
+    <div class="field">
+      <label>PV de vente inter-groupe €</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="pvVente" value="1.77" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
+      <div class="field-hint">Pour calculer ta marge</div>
+    </div>
+  </div>
+</div>
+
+<!-- BREAKDOWN TABLE -->
+<div class="card" style="margin-bottom:0">
+  <div class="card-title"><div class="card-icon ic-blue">📋</div>Décomposition détaillée par unité</div>
+  <div class="breakdown" id="breakdownTable">
+    <div class="bt-row header"><span>Composante</span><span>Base calcul</span><span>€/unit</span></div>
+  </div>
+</div>
+
+</div><!-- /left -->
+
+<!-- RIGHT: RESULTS -->
+<div>
+  <div class="result-panel">
+    <button class="calc-btn" onclick="calc()">⚡ Recalculer</button>
+
+    <div class="crr-main">
+      <div class="crr-label">Coût de revient rendu La Possession</div>
+      <div class="crr-value" id="crrVal">—</div>
+      <div class="crr-unit">€ par unité · tout inclus · DDP La Possession</div>
+      <div id="marginBadge" style="margin-top:10px;display:none">
+        <div class="crr-margin" id="marginInfo">— de marge</div>
+      </div>
+    </div>
+
+    <div class="detail-grid" id="detailGrid">
+      <div style="text-align:center;opacity:.5;font-size:12px;padding:1rem">Lance le calcul →</div>
+    </div>
+
+    <div style="margin-bottom:1rem">
+      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-bottom:8px">Répartition du coût (waterfall)</div>
+      <div class="waterfall" id="waterfall"></div>
+    </div>
+
+    <div class="kpi-row" id="kpiRow">
+      <div class="kpi"><div class="kpi-v" id="kpi1">—</div><div class="kpi-l">Marge brute</div></div>
+      <div class="kpi"><div class="kpi-v" id="kpi2">—</div><div class="kpi-l">% marge</div></div>
+      <div class="kpi"><div class="kpi-v" id="kpi3">—</div><div class="kpi-l">Marge ctnr</div></div>
+    </div>
+
+    <div style="margin-top:1.25rem;font-size:10px;opacity:.65;line-height:1.6;border-top:1px solid rgba(255,255,255,.15);padding-top:1rem">
+      <strong style="display:block;margin-bottom:3px">📄 Source : DSG Transit Repiquet · Cotation MI251003405</strong>
+      40' HC · Gdansk → PDG → La Possession · Marchandise : Dabex · 29/10/2025<br>
+      OM 25.5% + OMR 2.5% · TVA import 2.1% · Franchise détention 12j
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+</div><!-- /wrap -->
+
+<script>
+let sucreRate=0.105;
+
+function setSucre(val,id){
+  sucreRate=val;
+  document.getElementById('taxeSucreUnit').value=val;
+  document.querySelectorAll('.sucre-btn').forEach(b=>b.classList.remove('active'));
+  event.target.closest('.sucre-btn').classList.add('active');
+  calc();
+}
+
+function setCtnrDefaults(){
+  const t=document.getElementById('ctnrType').value;
+  if(t==='20'){
+    document.getElementById('fretTotal').value=3200;
+    document.getElementById('livraison').value=250;
+  } else {
+    document.getElementById('fretTotal').value=3850;
+    document.getElementById('livraison').value=306;
+  }
+  calc();
+}
+
+function updateSucreOptions(){
+  calc();
+}
+
+const f2=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:3,maximumFractionDigits:3}).format(n);
+const f2s=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const f0=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(n);
+const pct=n=>isNaN(n)?'—':(n*100).toFixed(1)+'%';
+
+function calc(){
+  const qte=+document.getElementById('qteTotal').value||1;
+  const prixUnit=+document.getElementById('prixUnit').value||0;
+  const incoterm=document.getElementById('incoterm').value;
+  const fretTotal=+document.getElementById('fretTotal').value||0;
+  const assInput=+document.getElementById('assurance').value||0;
+  const transInterne=+document.getElementById('transInterne').value||0;
+  const sticker=+document.getElementById('sticker').value||0;
+  const taxeSucre=+document.getElementById('taxeSucreUnit').value||0;
+  const pvVente=+document.getElementById('pvVente').value||0;
+
+  // Frais DSG
+  const acconnage=+document.getElementById('acconnage').value||0;
+  const fraisBL=+document.getElementById('fraisBL').value||0;
+  const prestDouane=+document.getElementById('prestDouane').value||0;
+  const fraisDossier=+document.getElementById('fraisDossier').value||0;
+  const cipCid=+document.getElementById('cipCid').value||0;
+  const livraison=+document.getElementById('livraison').value||0;
+  const creditEnlev=+document.getElementById('creditEnlev').value||0;
+  const redevance=+document.getElementById('redevance').value||0;
+  const tvaFraisPct=+document.getElementById('tvaFrais').value||2.1;
+
+  // Taux taxes
+  const omRate=+document.getElementById('omRate').value||25.5;
+  const omrRate=+document.getElementById('omrRate').value||2.5;
+  const droitDouane=+document.getElementById('droitDouane').value||0;
+  const tvaImport=+document.getElementById('tvaImport').value||2.1;
+
+  // ─── CALCUL ───
+
+  // 1. Valeur marchandise totale
+  const valMerch=prixUnit*qte;
+
+  // 2. Transport interne (EXW → FOB) si applicable
+  const transInterneTotal=incoterm==='exw'?transInterne:0;
+
+  // 3. Valeur FOB
+  const valFOB=valMerch+transInterneTotal;
+
+  // 4. Fret maritime (0 si CIF = déjà inclus)
+  const fretEffectif=incoterm==='cif'?0:fretTotal;
+
+  // 5. Assurance : 0.65% × (val_CFR × 1.2) ou valeur saisie
+  const valCFR=valFOB+fretEffectif;
+  const assCalc=assInput>0?assInput:0; // auto non activé par défaut
+  const assEffective=assCalc;
+
+  // 6. Valeur CAF (base imposition douane et OM)
+  const valCAF=valCFR+assEffective;
+  const valCAFUnit=valCAF/qte;
+
+  // 7. Droit de douane (sur valeur CAF)
+  const droitDouaneTotal=valCAF*droitDouane/100;
+  const droitDouaneUnit=droitDouaneTotal/qte;
+
+  // 8. Octroi de Mer (sur valeur CAF — base cotation DSG)
+  const omTotal=valCAF*omRate/100;
+  const omrTotal=valCAF*omrRate/100;
+  const omUnit=omTotal/qte;
+  const omrUnit=omrTotal/qte;
+
+  // 9. Redevance marchandises (fixe cotation)
+  const redevanceUnit=redevance/qte;
+
+  // 10. TVA import autoliquidée (sur valeur CAF + droits + OM)
+  const baseTVA=valCAF+droitDouaneTotal+omTotal+omrTotal;
+  const tvaImportTotal=baseTVA*tvaImport/100;
+  const tvaImportUnit=tvaImportTotal/qte;
+
+  // 11. Frais transit DSG (fixes, répartis par unité)
+  const fraisFixesTaxables=prestDouane+fraisDossier+cipCid+livraison+creditEnlev;
+  const tvaSurFrais=fraisFixesTaxables*tvaFraisPct/100;
+  const fraisFixesNonTaxables=acconnage+fraisBL;
+  const fraisTransitTotal=fraisFixesTaxables+tvaSurFrais+fraisFixesNonTaxables;
+  const fraisTransitUnit=fraisTransitTotal/qte;
+
+  // 12. Stickering / étiquetage
+  const stickerUnit=sticker;
+
+  // 13. Taxe sucre
+  const taxeSucreUnit=taxeSucre;
+
+  // ─── CRR PAR UNITÉ ───
+  const crrUnit=prixUnit+droitDouaneUnit+omUnit+omrUnit+redevanceUnit+tvaImportUnit+fraisTransitUnit+stickerUnit+taxeSucreUnit+(fretEffectif+assEffective+transInterneTotal)/qte;
+
+  // ─── MARGE ───
+  const margeUnit=pvVente>0?pvVente-crrUnit:NaN;
+  const margePct=pvVente>0?margeUnit/pvVente:NaN;
+  const margeTotale=margeUnit*qte;
+
+  // ─── AFFICHAGE CRR ───
+  document.getElementById('crrVal').textContent='€ '+f2(crrUnit);
+
+  if(pvVente>0){
+    const mb=document.getElementById('marginBadge');
+    mb.style.display='block';
+    const mi=document.getElementById('marginInfo');
+    mi.textContent=`+€${f2s(margeUnit)} / unit · ${(margePct*100).toFixed(1)}% marge`;
+    mi.style.background=margePct>0.25?'rgba(12,166,120,.3)':margePct>0.10?'rgba(230,119,0,.3)':'rgba(224,49,49,.3)';
+  } else {
+    document.getElementById('marginBadge').style.display='none';
+  }
+
+  // ─── DETAIL GRID ───
+  const items=[
+    {label:'Prix achat ('+document.getElementById('incoterm').value.toUpperCase()+')',val:prixUnit,base:'',color:''},
+    {label:'Fret maritime / '+qte+' un.',val:(fretEffectif+assEffective+transInterneTotal)/qte,base:fretEffectif>0?'€'+f0(fretEffectif):'—',color:''},
+    {label:'Droit de douane ('+droitDouane+'% CAF)',val:droitDouaneUnit,base:'€'+f2s(valCAFUnit)+'/u CAF',color:''},
+    {label:'Octroi de Mer ('+omRate+'%)',val:omUnit,base:'',color:'hl-row'},
+    {label:'OM Régional ('+omrRate+'%)',val:omrUnit,base:'',color:'hl-row'},
+    {label:'TVA import ('+tvaImport+'%)',val:tvaImportUnit,base:'autoliquidée',color:''},
+    {label:'Transit DSG / transit',val:fraisTransitUnit,base:'réparti sur '+f0(qte)+' un.',color:''},
+    {label:'Redevance marchandises',val:redevanceUnit,base:'fixe cotation',color:''},
+    {label:'Stickering FR',val:stickerUnit,base:'0.05€ standard',color:''},
+    {label:'Taxe sucre (PLFSS 2025)',val:taxeSucreUnit,base:''+taxeSucre+'€/unit',color:'hl-row'},
+    {label:'CRR TOTAL rendu La Possession',val:crrUnit,base:'',color:'total-row'},
+  ];
+  document.getElementById('detailGrid').innerHTML=items.map(it=>`
+    <div class="detail-row ${it.color}">
+      <span class="d-label">${it.label}${it.base?'<span class="tag">'+it.base+'</span>':''}</span>
+      <span class="d-value">€ ${f2(it.val)}</span>
+    </div>`).join('');
+
+  // ─── WATERFALL ───
+  const wfItems=[
+    {label:'Achat',val:prixUnit,color:'#3b5bdb'},
+    {label:'Fret+Trans',val:(fretEffectif+assEffective+transInterneTotal)/qte,color:'#1098ad'},
+    {label:'Drt douane',val:droitDouaneUnit,color:'#7048e8'},
+    {label:'OM+OMR',val:omUnit+omrUnit,color:'#e67700'},
+    {label:'TVA import',val:tvaImportUnit,color:'#d6336c'},
+    {label:'Transit DSG',val:fraisTransitUnit,color:'#2f9e44'},
+    {label:'Sticker+Sucre',val:stickerUnit+taxeSucreUnit,color:'#e8590c'},
+  ];
+  const maxWF=Math.max(...wfItems.map(w=>w.val),0.01);
+  document.getElementById('waterfall').innerHTML=wfItems.map(w=>`
+    <div class="wf-bar-wrap">
+      <span class="wf-label" style="color:rgba(255,255,255,.7)">${w.label}</span>
+      <div class="wf-bar" style="width:${Math.max(2,w.val/maxWF*160)}px;background:${w.color}80"></div>
+      <span class="wf-val">€${f2(w.val)}</span>
+    </div>`).join('');
+
+  // ─── KPIs ───
+  document.getElementById('kpi1').textContent=pvVente>0?'€'+f2s(margeUnit):'—';
+  document.getElementById('kpi2').textContent=pvVente>0?(margePct*100).toFixed(1)+'%':'—';
+  document.getElementById('kpi3').textContent=pvVente>0?'€'+f0(margeTotale):'—';
+
+  // ─── BREAKDOWN TABLE ───
+  const rows=[
+    {label:'Prix EXW/FOB fournisseur',base:'saisi',val:prixUnit,cls:''},
+    {label:'Transport interne (EXW→FOB)',base:incoterm==='exw'?'si EXW':'non applicable',val:(incoterm==='exw'?transInterne:0)/qte,cls:''},
+    {label:'Fret maritime (réparti)',base:'€'+f0(fretEffectif)+' / '+f0(qte)+' un.',val:fretEffectif/qte,cls:''},
+    {label:'Assurance transport',base:'0.65% val.CFR+20%',val:assEffective/qte,cls:''},
+    {label:'─ Valeur CAF / unité ─',base:'base taxation douane',val:valCAFUnit,cls:'subtotal b'},
+    {label:'Droit de douane ('+droitDouane+'%)',base:droitDouane+'% × CAF',val:droitDouaneUnit,cls:'p'},
+    {label:'Octroi de Mer V395 ('+omRate+'%)',base:omRate+'% × CAF · cotation DSG',val:omUnit,cls:'o'},
+    {label:'OM Régional K949 ('+omrRate+'%)',base:omrRate+'% × CAF · cotation DSG',val:omrUnit,cls:'o'},
+    {label:'Redevance marchandises V340',base:'fixe / qté · cotation DSG',val:redevanceUnit,cls:''},
+    {label:'TVA import autoliquidée ('+tvaImport+'%)',base:'(CAF+droits+OM)×'+tvaImport+'%',val:tvaImportUnit,cls:''},
+    {label:'Frais transit DSG (acconnage, BL...)',base:'€'+f2s(fraisTransitTotal)+' / '+f0(qte)+' un.',val:fraisTransitUnit,cls:'g'},
+    {label:'TVA sur frais transit ('+tvaFraisPct+'%)',base:'frais taxables uniquement',val:tvaSurFrais/qte,cls:''},
+    {label:'Stickering / étiquetage FR',base:'€'+sticker+'/unit',val:stickerUnit,cls:''},
+    {label:'Taxe sucre PLFSS 2025',base:'€'+taxeSucre+'/unit · '+document.getElementById('format').value,val:taxeSucreUnit,cls:''},
+    {label:'CRR TOTAL rendu La Possession',base:'DDP complet',val:crrUnit,cls:'grand wh'},
+  ];
+  document.getElementById('breakdownTable').innerHTML=
+    '<div class="bt-row header"><span>Composante</span><span>Base de calcul</span><span>€ / unité</span></div>'+
+    rows.map(r=>`<div class="bt-row ${r.cls}"><span class="bt-label">${r.label}</span><span class="bt-base">${r.base}</span><span class="bt-val ${r.cls}">${r.cls.includes('grand')?'<strong>':''}€ ${f2(r.val)}${r.cls.includes('grand')?'</strong>':''}</span></div>`).join('');
+}
+
+// Init
+calc();
+</script>
+</body>
+</html>
