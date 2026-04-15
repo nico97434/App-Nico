@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>INCA IMPORT — Calculateur CRR Réunion</title>
+<title>INCA IMPORT — CRR Batch Réunion</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -17,11 +18,9 @@
   --purple:#7048e8;--purple-soft:#f3f0ff;
   --teal:#0891b2;--teal-soft:#ecfeff;
   --text:#0f172a;--text2:#334155;--text3:#64748b;--text4:#94a3b8;
-  --mono:'JetBrains Mono',monospace;
-  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;--sans:'Plus Jakarta Sans',sans-serif;
   --r:12px;--r2:16px;
   --sh:0 1px 3px rgba(59,91,219,.08),0 4px 16px rgba(59,91,219,.06);
-  --sh2:0 2px 12px rgba(59,91,219,.14),0 8px 32px rgba(59,91,219,.08);
 }
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 
@@ -31,110 +30,117 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .logo{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-weight:800;font-size:11px;letter-spacing:2px;padding:6px 12px;border-radius:8px;text-transform:uppercase}
 .hdr-title{font-size:17px;font-weight:700}
 .hdr-sub{font-size:11px;color:var(--text3);margin-top:1px;font-weight:500}
-.src-badge{background:var(--amber-soft);border:1px solid rgba(230,119,0,.25);padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;color:var(--amber);letter-spacing:.5px}
 
-/* MAIN LAYOUT */
-.wrap{max-width:1200px;margin:0 auto;padding:2rem}
-.grid{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:start}
+.wrap{max-width:1400px;margin:0 auto;padding:1.5rem 2rem}
 
-/* SECTION */
-.sec{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;display:flex;align-items:center;gap:8px}
-.sec-line{flex:1;height:1px;background:var(--border)}
-.sec-ico{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-
-/* CARDS */
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem;box-shadow:var(--sh);margin-bottom:1.25rem}
-.card-title{font-size:14px;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
-.card-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.ic-blue{background:var(--blue-soft)}
-.ic-green{background:var(--green-soft)}
-.ic-purple{background:var(--purple-soft)}
-.ic-amber{background:var(--amber-soft)}
-.ic-teal{background:var(--teal-soft)}
-
-/* INPUT GRID */
-.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.input-grid.three{grid-template-columns:1fr 1fr 1fr}
-.full{grid-column:1/-1}
-.field{display:flex;flex-direction:column;gap:5px}
-.field label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
-.field-hint{font-size:10px;color:var(--text4);font-weight:500;margin-top:-2px}
+/* PARAMS BAR */
+.params-bar{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:var(--sh)}
+.params-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.params-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
 .inp-wrap{position:relative;display:flex;align-items:center}
-.inp-wrap input,.inp-wrap select{
-  width:100%;background:var(--bg);border:1.5px solid var(--border);
-  border-radius:9px;padding:10px 14px;
-  font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text);
-  outline:none;transition:all .2s;
-}
-.inp-wrap.has-suffix input{padding-right:44px}
+.inp-wrap input,.inp-wrap select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);outline:none;transition:all .2s}
+.inp-wrap.has-suffix input{padding-right:36px}
 .inp-wrap input:focus,.inp-wrap select:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(59,91,219,.1)}
-.inp-suffix{position:absolute;right:12px;font-size:11px;font-weight:700;color:var(--text4);pointer-events:none;font-family:var(--mono)}
-.inp-wrap input[disabled]{color:var(--text3);background:var(--border);cursor:not-allowed}
+.inp-suffix{position:absolute;right:10px;font-size:10px;font-weight:700;color:var(--text4);pointer-events:none;font-family:var(--mono)}
 
-/* RANGE */
-.range-wrap{display:flex;align-items:center;gap:10px}
-input[type=range]{-webkit-appearance:none;flex:1;height:6px;border-radius:3px;background:var(--border2);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));cursor:pointer;box-shadow:0 2px 6px rgba(59,91,219,.3)}
-.range-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--blue);min-width:48px;text-align:right}
+/* UPLOAD ZONE */
+.upload-zone{background:var(--white);border:2px dashed var(--border2);border-radius:var(--r2);padding:2.5rem;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:1.5rem}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue);background:var(--blue-soft)}
+.upload-zone.drag{border-style:solid}
+.upload-ico{font-size:40px;margin-bottom:.75rem}
+.upload-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.upload-sub{font-size:12px;color:var(--text3)}
+.upload-formats{display:inline-flex;gap:6px;margin-top:.75rem}
+.fmt-badge{background:var(--blue-soft);border:1px solid rgba(59,91,219,.2);padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;color:var(--blue)}
+#fileInput{display:none}
 
-/* TAXE SUCRE SELECTOR */
-.sucre-btns{display:flex;gap:6px;flex-wrap:wrap}
-.sucre-btn{padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--sans)}
-.sucre-btn:hover{border-color:var(--blue3);color:var(--blue)}
-.sucre-btn.active{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+/* STATUS BAR */
+.status-bar{display:none;background:var(--green-soft);border:1px solid rgba(12,166,120,.2);border-radius:var(--r);padding:10px 16px;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--green)}
+.status-bar.error{background:var(--red-soft);border-color:rgba(224,49,49,.2);color:var(--red)}
+.status-bar.hidden{display:none}
 
-/* RESULTS PANEL */
-.result-panel{background:linear-gradient(160deg,#1e3a8a 0%,var(--blue) 40%,var(--blue2) 100%);border-radius:var(--r2);padding:1.5rem;color:#fff;position:sticky;top:84px;box-shadow:0 8px 40px rgba(59,91,219,.35)}
+/* ACTIONS BAR */
+.actions-bar{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:9px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:none;display:flex;align-items:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 2px 8px rgba(59,91,219,.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,91,219,.4)}
+.btn-secondary{background:var(--white);border:1.5px solid var(--border);color:var(--text2)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;box-shadow:0 2px 8px rgba(12,166,120,.3)}
+.btn-green:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
 
-.crr-main{text-align:center;padding:1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:1.25rem}
-.crr-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:.5rem}
-.crr-value{font-family:var(--mono);font-size:52px;font-weight:700;line-height:1;letter-spacing:-1px}
-.crr-unit{font-size:13px;opacity:.7;margin-top:6px;font-weight:600}
-.crr-margin{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700}
+.search-wrap{margin-left:auto;position:relative}
+.search-wrap input{background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:8px 12px 8px 34px;font-size:13px;width:220px;outline:none;font-family:var(--sans)}
+.search-wrap input:focus{border-color:var(--blue)}
+.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
 
-.detail-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:1.25rem}
-.detail-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.08);transition:background .2s}
-.detail-row:hover{background:rgba(255,255,255,.14)}
-.detail-row.total-row{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2)}
-.detail-row.hl-row{background:rgba(255,184,0,.15);border:1px solid rgba(255,184,0,.2)}
-.d-label{font-size:11px;font-weight:600;opacity:.85;display:flex;align-items:center;gap:6px}
-.d-label .tag{font-size:8px;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,.2);letter-spacing:.5px;text-transform:uppercase;opacity:1}
-.d-value{font-family:var(--mono);font-size:12px;font-weight:700}
-.d-pct{font-size:9px;opacity:.6;margin-left:4px}
+/* SUMMARY CARDS */
+.summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.sum-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;box-shadow:var(--sh)}
+.sum-v{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--blue);line-height:1}
+.sum-l{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-top:4px}
 
-.waterfall{margin-bottom:1.25rem}
-.wf-bar-wrap{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.wf-label{font-size:9px;opacity:.7;font-weight:600;letter-spacing:.3px;min-width:100px;text-align:right}
-.wf-bar{height:8px;border-radius:4px;min-width:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.wf-val{font-family:var(--mono);font-size:9px;font-weight:700;opacity:.85}
+/* TABLE */
+.table-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--sh)}
+.table-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:14px;font-weight:700}
+.table-count{font-size:12px;color:var(--text3);font-weight:600}
 
-.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.kpi{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 8px;text-align:center}
-.kpi-v{font-family:var(--mono);font-size:16px;font-weight:700;line-height:1;margin-bottom:3px}
-.kpi-l{font-size:8px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;opacity:.65}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:var(--bg);padding:10px 12px;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);text-align:left;border-bottom:2px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+thead th:hover{color:var(--blue)}
+thead th.sort-asc::after{content:' ▲';color:var(--blue)}
+thead th.sort-desc::after{content:' ▼';color:var(--blue)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:hover{background:var(--blue-soft)}
+tbody tr:last-child{border-bottom:none}
+td{padding:10px 12px;vertical-align:middle}
+.td-producer{font-size:10px;color:var(--text3);font-weight:600}
+.td-product{font-weight:600;max-width:220px}
+.td-barcode{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.td-price{font-family:var(--mono);font-weight:700}
+.td-crr{font-family:var(--mono);font-weight:800;color:var(--blue)}
+.td-margin{font-family:var(--mono);font-weight:700}
+.td-margin.pos{color:var(--green)}
+.td-margin.neg{color:var(--red)}
+.td-bbd{font-size:10px;font-weight:600}
+.td-bbd.ok{color:var(--green)}
+.td-bbd.warn{color:var(--amber)}
+.td-bbd.urgent{color:var(--red)}
 
-.calc-btn{width:100%;padding:13px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);border-radius:var(--r);color:#fff;font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-bottom:1.25rem}
-.calc-btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px)}
+/* PILL */
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.3px}
+.pill-snack{background:var(--orange-soft);color:var(--orange)}
+.pill-drink{background:var(--teal-soft);color:var(--teal)}
+.pill-choco{background:var(--purple-soft);color:var(--purple)}
+.pill-other{background:var(--bg);color:var(--text3);border:1px solid var(--border)}
 
-/* SOURCE NOTE */
-.source-note{background:var(--amber-soft);border:1px solid rgba(230,119,0,.2);border-radius:10px;padding:10px 14px;font-size:10px;color:var(--amber);font-weight:600;line-height:1.6}
-.source-note strong{display:block;margin-bottom:3px;font-size:11px}
+/* DETAIL POPUP */
+.popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.popup-overlay.open{display:flex}
+.popup{background:var(--white);border-radius:var(--r2);width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.popup-hdr{background:linear-gradient(135deg,#1e3a8a,var(--blue));color:#fff;padding:1.25rem 1.5rem;border-radius:var(--r2) var(--r2) 0 0;display:flex;justify-content:space-between;align-items:flex-start}
+.popup-close{background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;cursor:pointer;width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:1rem}
+.popup-body{padding:1.5rem}
+.detail-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.detail-item:last-child{border-bottom:none}
+.detail-label{color:var(--text3);font-weight:600}
+.detail-val{font-family:var(--mono);font-weight:700}
+.detail-item.total{background:var(--blue-soft);margin:0 -1.5rem;padding:10px 1.5rem;font-weight:800}
+.detail-item.hl{background:var(--orange-soft);margin:0 -1.5rem;padding:8px 1.5rem}
 
-/* BREAKDOWN TABLE */
-.breakdown{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:.75rem}
-.bt-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px}
-.bt-row:last-child{border-bottom:none}
-.bt-row.header{background:var(--border);font-weight:700;font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
-.bt-row.subtotal{background:var(--blue-soft);font-weight:700}
-.bt-row.grand{background:var(--blue);color:#fff;font-weight:800}
-.bt-label{font-weight:500}
-.bt-base{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:right}
-.bt-val{font-family:var(--mono);font-size:12px;font-weight:700;text-align:right}
-.bt-val.g{color:var(--green)}.bt-val.b{color:var(--blue)}.bt-val.o{color:var(--orange)}.bt-val.p{color:var(--purple)}
-.bt-val.wh{color:#fff}
+/* EMPTY STATE */
+.empty{text-align:center;padding:4rem 2rem;color:var(--text3)}
+.empty-ico{font-size:48px;margin-bottom:1rem;opacity:.4}
+.empty-title{font-size:16px;font-weight:700;color:var(--text2);margin-bottom:.5rem}
+.empty-sub{font-size:13px}
 
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+/* PROGRESS */
+.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:1.5rem;display:none}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:2px;transition:width .3s}
 </style>
 </head>
 <body>
@@ -143,454 +149,517 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   <div class="hdr-l">
     <div class="logo">INCA IMPORT</div>
     <div>
-      <div class="hdr-title">Calculateur CRR Réunion</div>
-      <div class="hdr-sub">Coût de revient complet EXW/FOB → La Possession</div>
+      <div class="hdr-title">CRR Batch Calculator — Réunion</div>
+      <div class="hdr-sub">Calcul du coût de revient rendu La Possession pour toute offre fournisseur</div>
     </div>
   </div>
-  <div class="src-badge">📄 Basé sur cotation DSG Transit Repiquet MI251003405</div>
+  <button class="btn btn-green" onclick="exportExcel()" id="exportBtn" disabled>⬇ Exporter Excel</button>
 </div>
 
 <div class="wrap">
-<div class="grid">
 
-<!-- LEFT: INPUTS -->
-<div>
-
-<!-- 1. PRODUIT -->
-<div class="card">
-  <div class="card-title"><div class="card-icon ic-blue">📦</div>Produit importé</div>
-  <div class="input-grid three">
-    <div class="field full">
-      <label>Nom du produit</label>
-      <div class="inp-wrap"><input type="text" id="prodNom" placeholder="ex: Monster Energy 500ml" oninput="calc()"></div>
+<!-- PARAMS -->
+<div class="params-bar">
+  <div class="params-title">⚙️ Paramètres CRR globaux — DSG Transit Repiquet MI251003405</div>
+  <div class="params-grid">
+    <div class="field">
+      <label>Octroi de Mer V395</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_om" value="25.5" step="0.1"><span class="inp-suffix">%</span></div>
     </div>
     <div class="field">
-      <label>Prix unitaire EXW / FOB €</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="prixUnit" value="0.77" step="0.001" oninput="calc()"><span class="inp-suffix">€</span></div>
-      <div class="field-hint">Prix départ entrepôt fournisseur</div>
+      <label>OM Régional K949</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_omr" value="2.5" step="0.1"><span class="inp-suffix">%</span></div>
     </div>
     <div class="field">
-      <label>Incoterm</label>
-      <div class="inp-wrap">
-        <select id="incoterm" onchange="calc()">
-          <option value="exw">EXW — Départ usine</option>
-          <option value="fca" selected>FCA — Franco transporteur</option>
-          <option value="fob">FOB — Franco à bord</option>
-          <option value="cif">CIF — Coût assurance fret</option>
-        </select>
-      </div>
+      <label>Droit de douane</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_dd" value="9.6" step="0.1"><span class="inp-suffix">%</span></div>
     </div>
     <div class="field">
-      <label>Quantité totale (unités)</label>
-      <div class="inp-wrap"><input type="number" id="qteTotal" value="34560" oninput="calc()"></div>
+      <label>TVA import Réunion</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_tva" value="2.1" step="0.1"><span class="inp-suffix">%</span></div>
     </div>
     <div class="field">
-      <label>Format produit</label>
-      <div class="inp-wrap">
-        <select id="format" onchange="updateSucreOptions()">
-          <option value="can500">Canette 500ml</option>
-          <option value="can355">Canette 355ml</option>
-          <option value="can330">Canette 330ml</option>
-          <option value="can250">Canette 250ml</option>
-          <option value="pet500">Bouteille PET 500ml</option>
-          <option value="pet250">Bouteille PET 250ml</option>
-          <option value="sachet">Sachet / snack solide</option>
-          <option value="autre">Autre / non soumis sucre</option>
-        </select>
-      </div>
+      <label>Fret maritime 40'</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_fret" value="3850"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Frais transit DSG</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_dsg" value="1329"><span class="inp-suffix">€</span></div>
+    </div>
+    <div class="field">
+      <label>Qté par conteneur (unités)</label>
+      <div class="inp-wrap"><input type="number" id="p_qte" value="34560"></div>
     </div>
     <div class="field">
       <label>Stickering étiquetage FR</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="sticker" value="0.05" step="0.01" oninput="calc()"><span class="inp-suffix">€/u</span></div>
-      <div class="field-hint">Inclus chez Dabex · 0 si déjà étiqueté FR</div>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_sticker" value="0.05" step="0.01"><span class="inp-suffix">€/u</span></div>
     </div>
-  </div>
-</div>
-
-<!-- 2. FRET -->
-<div class="card">
-  <div class="card-title"><div class="card-icon ic-teal">🚢</div>Fret maritime</div>
-  <div class="input-grid">
     <div class="field">
-      <label>Type de conteneur</label>
+      <label>Marge cible vente</label>
+      <div class="inp-wrap has-suffix"><input type="number" id="p_margin" value="30" step="1"><span class="inp-suffix">%</span></div>
+    </div>
+    <div class="field">
+      <label>Format conteneur</label>
       <div class="inp-wrap">
-        <select id="ctnrType" onchange="setCtnrDefaults()">
+        <select id="p_ctnr" onchange="updateFret()">
           <option value="40" selected>40' HC DRY</option>
           <option value="20">20' DRY</option>
         </select>
       </div>
     </div>
-    <div class="field">
-      <label>Coût fret maritime total €</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="fretTotal" value="3850" oninput="calc()"><span class="inp-suffix">€</span></div>
-      <div class="field-hint">FAK armateur (MSC / CMA CGM)</div>
-    </div>
-    <div class="field">
-      <label>Assurance transport</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="assurance" value="0" oninput="calc()" placeholder="Auto 0.65%"><span class="inp-suffix">€</span></div>
-      <div class="field-hint">0.65% × (val.merch + fret + 20%). Laisser 0 = auto</div>
-    </div>
-    <div class="field">
-      <label>Transport interne (EXW → FOB)</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="transInterne" value="0" oninput="calc()"><span class="inp-suffix">€</span></div>
-      <div class="field-hint">Si incoterm EXW uniquement</div>
-    </div>
   </div>
 </div>
 
-<!-- 3. FRAIS DSG TRANSIT (préremplis cotation) -->
-<div class="card">
-  <div class="card-title"><div class="card-icon ic-amber">🏷</div>Frais transit & douane — <span style="font-size:12px;color:var(--amber);font-weight:600;margin-left:4px">DSG Transit Repiquet MI251003405</span></div>
-  <div style="background:var(--amber-soft);border:1px solid rgba(230,119,0,.15);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--amber);font-weight:600;margin-bottom:1rem">
-    ✓ Valeurs préremplies d'après ta cotation officielle du 29/10/2025 — valid. 31/12/2025 · 40' HC PDG → La Possession
+<!-- UPLOAD -->
+<div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="onDrag(event)" ondragleave="offDrag(event)" ondrop="onDrop(event)">
+  <div class="upload-ico">📂</div>
+  <div class="upload-title">Glisser votre offre fournisseur ici ou cliquer pour choisir</div>
+  <div class="upload-sub">Compatible avec le format Dabex et tout tableau fournisseur standard</div>
+  <div class="upload-formats">
+    <span class="fmt-badge">.xlsx</span>
+    <span class="fmt-badge">.xls</span>
+    <span class="fmt-badge">.csv</span>
   </div>
-  <div class="input-grid three">
-    <div class="field">
-      <label>Acconnage (non taxable)</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="acconnage" value="693.40" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Frais de BL (non taxable)</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="fraisBL" value="95.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Prestation douane import</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="prestDouane" value="180.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Frais de dossier</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="fraisDossier" value="25.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>CIP & CID (5 pos. douane)</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="cipCid" value="30.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Livraison La Possession</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="livraison" value="306.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Crédit enlèvement maritime</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="creditEnlev" value="108.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>Redevance marchandises V340</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="redevance" value="150.00" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-    </div>
-    <div class="field">
-      <label>TVA sur frais taxables (2.1%)</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="tvaFrais" value="2.1" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
-    </div>
+</div>
+<input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="loadFile(this.files[0])">
+
+<div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="status-bar hidden" id="statusBar"></div>
+
+<!-- SUMMARY -->
+<div class="summary-row" id="summaryRow" style="display:none">
+  <div class="sum-card"><div class="sum-v" id="s_produits">0</div><div class="sum-l">Produits analysés</div></div>
+  <div class="sum-card"><div class="sum-v" id="s_crr_moy">—</div><div class="sum-l">CRR moyen / unité</div></div>
+  <div class="sum-card"><div class="sum-v" id="s_margin_moy">—</div><div class="sum-l">Marge moyenne</div></div>
+  <div class="sum-card"><div class="sum-v" id="s_pv_moy">—</div><div class="sum-l">PV conseillé moyen</div></div>
+</div>
+
+<!-- ACTIONS -->
+<div class="actions-bar" id="actionsBar" style="display:none">
+  <button class="btn btn-primary" onclick="recalcAll()">⚡ Recalculer tout</button>
+  <button class="btn btn-secondary" onclick="resetFile()">🗑 Changer de fichier</button>
+  <div class="search-wrap">
+    <span class="search-ico">🔍</span>
+    <input type="text" id="searchInput" placeholder="Filtrer produits..." oninput="filterTable()">
   </div>
 </div>
 
-<!-- 4. TAXES RÉUNION -->
-<div class="card">
-  <div class="card-title"><div class="card-icon ic-purple">🏝</div>Taxes spécifiques Réunion</div>
-  <div class="input-grid">
-    <div class="field">
-      <label>Octroi de Mer V395</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="omRate" value="25.5" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
-      <div class="field-hint">25.5% sur valeur CAF (cotation DSG)</div>
-    </div>
-    <div class="field">
-      <label>Octroi de Mer Régional K949</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="omrRate" value="2.5" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
-      <div class="field-hint">2.5% — régional (cotation DSG)</div>
-    </div>
-    <div class="field">
-      <label>Droit de douane</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="droitDouane" value="9.6" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
-      <div class="field-hint">Sur valeur CAF · vérifier code NC</div>
-    </div>
-    <div class="field">
-      <label>TVA import autoliquidée</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="tvaImport" value="2.1" step="0.1" oninput="calc()"><span class="inp-suffix">%</span></div>
-      <div class="field-hint">2.1% Réunion (vs 20% métropole)</div>
-    </div>
+<!-- TABLE -->
+<div class="table-wrap" id="tableWrap">
+  <div class="empty">
+    <div class="empty-ico">📋</div>
+    <div class="empty-title">Aucun fichier chargé</div>
+    <div class="empty-sub">Importez votre offre fournisseur pour calculer automatiquement les CRR</div>
   </div>
 </div>
 
-<!-- 5. TAXE SUCRE -->
-<div class="card">
-  <div class="card-title"><div class="card-icon ic-green">🍬</div>Taxe sucre — Loi PLFSS 2025 (en vigueur mars 2025)</div>
-  <div class="field" style="margin-bottom:1rem">
-    <label>Teneur en sucre / édulcorant</label>
-    <div class="sucre-btns" id="sucreBtns">
-      <button class="sucre-btn" onclick="setSucre(0,'zero')">0 sucre<br><span style="font-size:9px;opacity:.7">€0/unit</span></button>
-      <button class="sucre-btn" onclick="setSucre(0.02,'faible')">≤5 kg/hl<br><span style="font-size:9px;opacity:.7">€0.020/500ml</span></button>
-      <button class="sucre-btn active" onclick="setSucre(0.105,'moyen')">5–8 kg/hl<br><span style="font-size:9px;opacity:.7">€0.105/500ml</span></button>
-      <button class="sucre-btn" onclick="setSucre(0.175,'fort')">{'>'} 8 kg/hl<br><span style="font-size:9px;opacity:.7">€0.175/500ml</span></button>
-      <button class="sucre-btn" onclick="setSucre(0.018,'edulc')">Édulcorant seul<br><span style="font-size:9px;opacity:.7">€0.018/500ml</span></button>
-    </div>
-  </div>
-  <div class="input-grid">
-    <div class="field">
-      <label>Taxe sucre par unité €</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="taxeSucreUnit" value="0.105" step="0.001" oninput="calc()"><span class="inp-suffix">€/u</span></div>
-      <div class="field-hint">Modifie automatiquement selon format</div>
-    </div>
-    <div class="field">
-      <label>PV de vente inter-groupe €</label>
-      <div class="inp-wrap has-suffix"><input type="number" id="pvVente" value="1.77" step="0.01" oninput="calc()"><span class="inp-suffix">€</span></div>
-      <div class="field-hint">Pour calculer ta marge</div>
-    </div>
-  </div>
-</div>
-
-<!-- BREAKDOWN TABLE -->
-<div class="card" style="margin-bottom:0">
-  <div class="card-title"><div class="card-icon ic-blue">📋</div>Décomposition détaillée par unité</div>
-  <div class="breakdown" id="breakdownTable">
-    <div class="bt-row header"><span>Composante</span><span>Base calcul</span><span>€/unit</span></div>
-  </div>
-</div>
-
-</div><!-- /left -->
-
-<!-- RIGHT: RESULTS -->
-<div>
-  <div class="result-panel">
-    <button class="calc-btn" onclick="calc()">⚡ Recalculer</button>
-
-    <div class="crr-main">
-      <div class="crr-label">Coût de revient rendu La Possession</div>
-      <div class="crr-value" id="crrVal">—</div>
-      <div class="crr-unit">€ par unité · tout inclus · DDP La Possession</div>
-      <div id="marginBadge" style="margin-top:10px;display:none">
-        <div class="crr-margin" id="marginInfo">— de marge</div>
-      </div>
-    </div>
-
-    <div class="detail-grid" id="detailGrid">
-      <div style="text-align:center;opacity:.5;font-size:12px;padding:1rem">Lance le calcul →</div>
-    </div>
-
-    <div style="margin-bottom:1rem">
-      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-bottom:8px">Répartition du coût (waterfall)</div>
-      <div class="waterfall" id="waterfall"></div>
-    </div>
-
-    <div class="kpi-row" id="kpiRow">
-      <div class="kpi"><div class="kpi-v" id="kpi1">—</div><div class="kpi-l">Marge brute</div></div>
-      <div class="kpi"><div class="kpi-v" id="kpi2">—</div><div class="kpi-l">% marge</div></div>
-      <div class="kpi"><div class="kpi-v" id="kpi3">—</div><div class="kpi-l">Marge ctnr</div></div>
-    </div>
-
-    <div style="margin-top:1.25rem;font-size:10px;opacity:.65;line-height:1.6;border-top:1px solid rgba(255,255,255,.15);padding-top:1rem">
-      <strong style="display:block;margin-bottom:3px">📄 Source : DSG Transit Repiquet · Cotation MI251003405</strong>
-      40' HC · Gdansk → PDG → La Possession · Marchandise : Dabex · 29/10/2025<br>
-      OM 25.5% + OMR 2.5% · TVA import 2.1% · Franchise détention 12j
-    </div>
-  </div>
-</div>
-
-</div><!-- /grid -->
 </div><!-- /wrap -->
 
+<!-- DETAIL POPUP -->
+<div class="popup-overlay" id="popup" onclick="closePopup(event)">
+  <div class="popup">
+    <div class="popup-hdr">
+      <div>
+        <div style="font-size:11px;opacity:.7;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Détail CRR</div>
+        <div style="font-size:15px;font-weight:700" id="popup-title">—</div>
+      </div>
+      <button class="popup-close" onclick="document.getElementById('popup').classList.remove('open')">✕</button>
+    </div>
+    <div class="popup-body" id="popup-body"></div>
+  </div>
+</div>
+
 <script>
-let sucreRate=0.105;
+let allProducts = [];
+let sortCol = null, sortDir = 1;
 
-function setSucre(val,id){
-  sucreRate=val;
-  document.getElementById('taxeSucreUnit').value=val;
-  document.querySelectorAll('.sucre-btn').forEach(b=>b.classList.remove('active'));
-  event.target.closest('.sucre-btn').classList.add('active');
-  calc();
+// ── Helpers ──────────────────────────────────────────────
+const f2 = n => isNaN(n)||n==null ? '—' : new Intl.NumberFormat('fr-FR',{minimumFractionDigits:3,maximumFractionDigits:3}).format(n);
+const f2s = n => isNaN(n)||n==null ? '—' : new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const f0 = n => isNaN(n)||n==null ? '—' : new Intl.NumberFormat('fr-FR').format(Math.round(n));
+
+function getP(id){ return parseFloat(document.getElementById(id).value)||0; }
+
+function updateFret(){
+  const v = document.getElementById('p_ctnr').value;
+  document.getElementById('p_fret').value = v==='20' ? 3200 : 3850;
 }
 
-function setCtnrDefaults(){
-  const t=document.getElementById('ctnrType').value;
-  if(t==='20'){
-    document.getElementById('fretTotal').value=3200;
-    document.getElementById('livraison').value=250;
-  } else {
-    document.getElementById('fretTotal').value=3850;
-    document.getElementById('livraison').value=306;
-  }
-  calc();
+// ── CRR Calculation ───────────────────────────────────────
+function calcCRR(prixUnit){
+  const qte    = getP('p_qte') || 34560;
+  const om     = getP('p_om') / 100;
+  const omr    = getP('p_omr') / 100;
+  const dd     = getP('p_dd') / 100;
+  const tva    = getP('p_tva') / 100;
+  const fret   = getP('p_fret');
+  const dsg    = getP('p_dsg');
+  const stk    = getP('p_sticker');
+  const marg   = getP('p_margin') / 100;
+
+  const valCAF      = prixUnit + fret / qte;
+  const droitDD     = valCAF * dd;
+  const omUnit      = valCAF * om;
+  const omrUnit     = valCAF * omr;
+  const baseTVA     = valCAF + droitDD + omUnit + omrUnit;
+  const tvaUnit     = baseTVA * tva;
+  const dsgUnit     = dsg / qte;
+  const crr         = prixUnit + fret/qte + droitDD + omUnit + omrUnit + tvaUnit + dsgUnit + stk;
+  const pvConseille = marg > 0 && marg < 1 ? crr / (1 - marg) : null;
+
+  return { prixUnit, fretUnit: fret/qte, droitDD, omUnit, omrUnit, tvaUnit, dsgUnit, stkUnit: stk, crr, pvConseille, valCAF };
 }
 
-function updateSucreOptions(){
-  calc();
+// ── File Loading ──────────────────────────────────────────
+function onDrag(e){ e.preventDefault(); document.getElementById('uploadZone').classList.add('drag'); }
+function offDrag(e){ document.getElementById('uploadZone').classList.remove('drag'); }
+function onDrop(e){ e.preventDefault(); offDrag(e); loadFile(e.dataTransfer.files[0]); }
+
+function loadFile(file){
+  if(!file) return;
+  setStatus('⏳ Lecture du fichier...', false);
+  showProgress(20);
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      showProgress(50);
+      const wb = XLSX.read(e.target.result, { type:'array', cellDates:true });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const raw = XLSX.utils.sheet_to_json(ws, { header:1, defval:null });
+      showProgress(75);
+      parseSheet(raw, file.name);
+      showProgress(100);
+      setTimeout(()=>{ document.getElementById('progressBar').style.display='none'; }, 400);
+    } catch(err){
+      setStatus('❌ Erreur de lecture : ' + err.message, true);
+      document.getElementById('progressBar').style.display='none';
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }
 
-const f2=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:3,maximumFractionDigits:3}).format(n);
-const f2s=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
-const f0=n=>isNaN(n)?'—':new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(n);
-const pct=n=>isNaN(n)?'—':(n*100).toFixed(1)+'%';
+function showProgress(pct){
+  const pb = document.getElementById('progressBar');
+  pb.style.display='block';
+  document.getElementById('progressFill').style.width = pct+'%';
+}
 
-function calc(){
-  const qte=+document.getElementById('qteTotal').value||1;
-  const prixUnit=+document.getElementById('prixUnit').value||0;
-  const incoterm=document.getElementById('incoterm').value;
-  const fretTotal=+document.getElementById('fretTotal').value||0;
-  const assInput=+document.getElementById('assurance').value||0;
-  const transInterne=+document.getElementById('transInterne').value||0;
-  const sticker=+document.getElementById('sticker').value||0;
-  const taxeSucre=+document.getElementById('taxeSucreUnit').value||0;
-  const pvVente=+document.getElementById('pvVente').value||0;
+function parseSheet(rows, filename){
+  // Detect header row — look for row containing "Price" or "prix"
+  let headerIdx = -1;
+  let colMap = {};
 
-  // Frais DSG
-  const acconnage=+document.getElementById('acconnage').value||0;
-  const fraisBL=+document.getElementById('fraisBL').value||0;
-  const prestDouane=+document.getElementById('prestDouane').value||0;
-  const fraisDossier=+document.getElementById('fraisDossier').value||0;
-  const cipCid=+document.getElementById('cipCid').value||0;
-  const livraison=+document.getElementById('livraison').value||0;
-  const creditEnlev=+document.getElementById('creditEnlev').value||0;
-  const redevance=+document.getElementById('redevance').value||0;
-  const tvaFraisPct=+document.getElementById('tvaFrais').value||2.1;
-
-  // Taux taxes
-  const omRate=+document.getElementById('omRate').value||25.5;
-  const omrRate=+document.getElementById('omrRate').value||2.5;
-  const droitDouane=+document.getElementById('droitDouane').value||0;
-  const tvaImport=+document.getElementById('tvaImport').value||2.1;
-
-  // ─── CALCUL ───
-
-  // 1. Valeur marchandise totale
-  const valMerch=prixUnit*qte;
-
-  // 2. Transport interne (EXW → FOB) si applicable
-  const transInterneTotal=incoterm==='exw'?transInterne:0;
-
-  // 3. Valeur FOB
-  const valFOB=valMerch+transInterneTotal;
-
-  // 4. Fret maritime (0 si CIF = déjà inclus)
-  const fretEffectif=incoterm==='cif'?0:fretTotal;
-
-  // 5. Assurance : 0.65% × (val_CFR × 1.2) ou valeur saisie
-  const valCFR=valFOB+fretEffectif;
-  const assCalc=assInput>0?assInput:0; // auto non activé par défaut
-  const assEffective=assCalc;
-
-  // 6. Valeur CAF (base imposition douane et OM)
-  const valCAF=valCFR+assEffective;
-  const valCAFUnit=valCAF/qte;
-
-  // 7. Droit de douane (sur valeur CAF)
-  const droitDouaneTotal=valCAF*droitDouane/100;
-  const droitDouaneUnit=droitDouaneTotal/qte;
-
-  // 8. Octroi de Mer (sur valeur CAF — base cotation DSG)
-  const omTotal=valCAF*omRate/100;
-  const omrTotal=valCAF*omrRate/100;
-  const omUnit=omTotal/qte;
-  const omrUnit=omrTotal/qte;
-
-  // 9. Redevance marchandises (fixe cotation)
-  const redevanceUnit=redevance/qte;
-
-  // 10. TVA import autoliquidée (sur valeur CAF + droits + OM)
-  const baseTVA=valCAF+droitDouaneTotal+omTotal+omrTotal;
-  const tvaImportTotal=baseTVA*tvaImport/100;
-  const tvaImportUnit=tvaImportTotal/qte;
-
-  // 11. Frais transit DSG (fixes, répartis par unité)
-  const fraisFixesTaxables=prestDouane+fraisDossier+cipCid+livraison+creditEnlev;
-  const tvaSurFrais=fraisFixesTaxables*tvaFraisPct/100;
-  const fraisFixesNonTaxables=acconnage+fraisBL;
-  const fraisTransitTotal=fraisFixesTaxables+tvaSurFrais+fraisFixesNonTaxables;
-  const fraisTransitUnit=fraisTransitTotal/qte;
-
-  // 12. Stickering / étiquetage
-  const stickerUnit=sticker;
-
-  // 13. Taxe sucre
-  const taxeSucreUnit=taxeSucre;
-
-  // ─── CRR PAR UNITÉ ───
-  const crrUnit=prixUnit+droitDouaneUnit+omUnit+omrUnit+redevanceUnit+tvaImportUnit+fraisTransitUnit+stickerUnit+taxeSucreUnit+(fretEffectif+assEffective+transInterneTotal)/qte;
-
-  // ─── MARGE ───
-  const margeUnit=pvVente>0?pvVente-crrUnit:NaN;
-  const margePct=pvVente>0?margeUnit/pvVente:NaN;
-  const margeTotale=margeUnit*qte;
-
-  // ─── AFFICHAGE CRR ───
-  document.getElementById('crrVal').textContent='€ '+f2(crrUnit);
-
-  if(pvVente>0){
-    const mb=document.getElementById('marginBadge');
-    mb.style.display='block';
-    const mi=document.getElementById('marginInfo');
-    mi.textContent=`+€${f2s(margeUnit)} / unit · ${(margePct*100).toFixed(1)}% marge`;
-    mi.style.background=margePct>0.25?'rgba(12,166,120,.3)':margePct>0.10?'rgba(230,119,0,.3)':'rgba(224,49,49,.3)';
-  } else {
-    document.getElementById('marginBadge').style.display='none';
+  for(let i=0; i<Math.min(rows.length,15); i++){
+    const row = rows[i];
+    if(!row) continue;
+    const rowStr = row.map(c=>String(c||'').toLowerCase()).join('|');
+    if(rowStr.includes('price') || rowStr.includes('prix') || rowStr.includes('product')){
+      headerIdx = i;
+      // Map columns
+      row.forEach((cell, j) => {
+        const c = String(cell||'').toLowerCase().trim();
+        if(c.includes('product') || c.includes('produit') || c.includes('nom')) colMap.product = j;
+        else if(c.includes('producer') || c.includes('brand') || c.includes('marque')) colMap.producer = j;
+        else if(c.includes('barcode') || c.includes('ean') || c.includes('code')) colMap.barcode = j;
+        else if(c.includes('price') || c.includes('prix')) colMap.price = j;
+        else if(c.includes('pcs/case') || c.includes('pcs case') || c.includes('unités/carton')) colMap.pcsCase = j;
+        else if(c.includes('pcs/pallet') || c.includes('palette')) colMap.pcsPallet = j;
+        else if(c.includes('bbd') || c.includes('dlc') || c.includes('date') || c.includes('exp')) colMap.bbd = j;
+        else if(c.includes('available') || c.includes('pallets') || c.includes('stock')) colMap.pallets = j;
+        else if(c.includes('weight') || c.includes('poids')) colMap.weight = j;
+        else if(c.includes('note') || c.includes('comment')) colMap.notes = j;
+      });
+      break;
+    }
   }
 
-  // ─── DETAIL GRID ───
-  const items=[
-    {label:'Prix achat ('+document.getElementById('incoterm').value.toUpperCase()+')',val:prixUnit,base:'',color:''},
-    {label:'Fret maritime / '+qte+' un.',val:(fretEffectif+assEffective+transInterneTotal)/qte,base:fretEffectif>0?'€'+f0(fretEffectif):'—',color:''},
-    {label:'Droit de douane ('+droitDouane+'% CAF)',val:droitDouaneUnit,base:'€'+f2s(valCAFUnit)+'/u CAF',color:''},
-    {label:'Octroi de Mer ('+omRate+'%)',val:omUnit,base:'',color:'hl-row'},
-    {label:'OM Régional ('+omrRate+'%)',val:omrUnit,base:'',color:'hl-row'},
-    {label:'TVA import ('+tvaImport+'%)',val:tvaImportUnit,base:'autoliquidée',color:''},
-    {label:'Transit DSG / transit',val:fraisTransitUnit,base:'réparti sur '+f0(qte)+' un.',color:''},
-    {label:'Redevance marchandises',val:redevanceUnit,base:'fixe cotation',color:''},
-    {label:'Stickering FR',val:stickerUnit,base:'0.05€ standard',color:''},
-    {label:'Taxe sucre (PLFSS 2025)',val:taxeSucreUnit,base:''+taxeSucre+'€/unit',color:'hl-row'},
-    {label:'CRR TOTAL rendu La Possession',val:crrUnit,base:'',color:'total-row'},
-  ];
-  document.getElementById('detailGrid').innerHTML=items.map(it=>`
-    <div class="detail-row ${it.color}">
-      <span class="d-label">${it.label}${it.base?'<span class="tag">'+it.base+'</span>':''}</span>
-      <span class="d-value">€ ${f2(it.val)}</span>
-    </div>`).join('');
+  // Fallback: assume DABEX format (detected by col count ~17)
+  if(headerIdx === -1 || Object.keys(colMap).length < 2){
+    // DABEX specific: producer=0, product=2, barcode=3, pcsCase=4, pcsPallet=5, bbd=6, pallets=7, price=8, notes=9
+    headerIdx = 5;
+    colMap = { producer:0, product:2, barcode:3, pcsCase:4, pcsPallet:5, bbd:6, pallets:7, price:8, notes:9 };
+  }
 
-  // ─── WATERFALL ───
-  const wfItems=[
-    {label:'Achat',val:prixUnit,color:'#3b5bdb'},
-    {label:'Fret+Trans',val:(fretEffectif+assEffective+transInterneTotal)/qte,color:'#1098ad'},
-    {label:'Drt douane',val:droitDouaneUnit,color:'#7048e8'},
-    {label:'OM+OMR',val:omUnit+omrUnit,color:'#e67700'},
-    {label:'TVA import',val:tvaImportUnit,color:'#d6336c'},
-    {label:'Transit DSG',val:fraisTransitUnit,color:'#2f9e44'},
-    {label:'Sticker+Sucre',val:stickerUnit+taxeSucreUnit,color:'#e8590c'},
-  ];
-  const maxWF=Math.max(...wfItems.map(w=>w.val),0.01);
-  document.getElementById('waterfall').innerHTML=wfItems.map(w=>`
-    <div class="wf-bar-wrap">
-      <span class="wf-label" style="color:rgba(255,255,255,.7)">${w.label}</span>
-      <div class="wf-bar" style="width:${Math.max(2,w.val/maxWF*160)}px;background:${w.color}80"></div>
-      <span class="wf-val">€${f2(w.val)}</span>
-    </div>`).join('');
+  const products = [];
+  for(let i = headerIdx+1; i < rows.length; i++){
+    const row = rows[i];
+    if(!row) continue;
+    const productName = row[colMap.product];
+    const priceRaw = row[colMap.price];
+    if(!productName || !priceRaw) continue;
+    const price = parseFloat(String(priceRaw).replace(',','.'));
+    if(isNaN(price) || price <= 0) continue;
 
-  // ─── KPIs ───
-  document.getElementById('kpi1').textContent=pvVente>0?'€'+f2s(margeUnit):'—';
-  document.getElementById('kpi2').textContent=pvVente>0?(margePct*100).toFixed(1)+'%':'—';
-  document.getElementById('kpi3').textContent=pvVente>0?'€'+f0(margeTotale):'—';
+    let bbdStr = '';
+    if(colMap.bbd !== undefined && row[colMap.bbd]){
+      const bbdVal = row[colMap.bbd];
+      if(bbdVal instanceof Date) bbdStr = bbdVal.toLocaleDateString('fr-FR');
+      else bbdStr = String(bbdVal);
+    }
 
-  // ─── BREAKDOWN TABLE ───
-  const rows=[
-    {label:'Prix EXW/FOB fournisseur',base:'saisi',val:prixUnit,cls:''},
-    {label:'Transport interne (EXW→FOB)',base:incoterm==='exw'?'si EXW':'non applicable',val:(incoterm==='exw'?transInterne:0)/qte,cls:''},
-    {label:'Fret maritime (réparti)',base:'€'+f0(fretEffectif)+' / '+f0(qte)+' un.',val:fretEffectif/qte,cls:''},
-    {label:'Assurance transport',base:'0.65% val.CFR+20%',val:assEffective/qte,cls:''},
-    {label:'─ Valeur CAF / unité ─',base:'base taxation douane',val:valCAFUnit,cls:'subtotal b'},
-    {label:'Droit de douane ('+droitDouane+'%)',base:droitDouane+'% × CAF',val:droitDouaneUnit,cls:'p'},
-    {label:'Octroi de Mer V395 ('+omRate+'%)',base:omRate+'% × CAF · cotation DSG',val:omUnit,cls:'o'},
-    {label:'OM Régional K949 ('+omrRate+'%)',base:omrRate+'% × CAF · cotation DSG',val:omrUnit,cls:'o'},
-    {label:'Redevance marchandises V340',base:'fixe / qté · cotation DSG',val:redevanceUnit,cls:''},
-    {label:'TVA import autoliquidée ('+tvaImport+'%)',base:'(CAF+droits+OM)×'+tvaImport+'%',val:tvaImportUnit,cls:''},
-    {label:'Frais transit DSG (acconnage, BL...)',base:'€'+f2s(fraisTransitTotal)+' / '+f0(qte)+' un.',val:fraisTransitUnit,cls:'g'},
-    {label:'TVA sur frais transit ('+tvaFraisPct+'%)',base:'frais taxables uniquement',val:tvaSurFrais/qte,cls:''},
-    {label:'Stickering / étiquetage FR',base:'€'+sticker+'/unit',val:stickerUnit,cls:''},
-    {label:'Taxe sucre PLFSS 2025',base:'€'+taxeSucre+'/unit · '+document.getElementById('format').value,val:taxeSucreUnit,cls:''},
-    {label:'CRR TOTAL rendu La Possession',base:'DDP complet',val:crrUnit,cls:'grand wh'},
-  ];
-  document.getElementById('breakdownTable').innerHTML=
-    '<div class="bt-row header"><span>Composante</span><span>Base de calcul</span><span>€ / unité</span></div>'+
-    rows.map(r=>`<div class="bt-row ${r.cls}"><span class="bt-label">${r.label}</span><span class="bt-base">${r.base}</span><span class="bt-val ${r.cls}">${r.cls.includes('grand')?'<strong>':''}€ ${f2(r.val)}${r.cls.includes('grand')?'</strong>':''}</span></div>`).join('');
+    products.push({
+      id: i,
+      producer: colMap.producer !== undefined ? (row[colMap.producer]||'') : '',
+      product: String(productName).trim(),
+      barcode: colMap.barcode !== undefined ? (row[colMap.barcode]||'') : '',
+      pcsCase: colMap.pcsCase !== undefined ? (row[colMap.pcsCase]||'') : '',
+      pcsPallet: colMap.pcsPallet !== undefined ? (row[colMap.pcsPallet]||'') : '',
+      bbd: bbdStr,
+      pallets: colMap.pallets !== undefined ? (row[colMap.pallets]||'') : '',
+      price: price,
+      notes: colMap.notes !== undefined ? (row[colMap.notes]||'') : '',
+    });
+  }
+
+  if(products.length === 0){
+    setStatus(`❌ Aucun produit détecté dans "${filename}". Vérifiez le format.`, true);
+    return;
+  }
+
+  allProducts = products;
+  setStatus(`✅ ${products.length} produits importés depuis "${filename}"`, false);
+  recalcAll();
 }
 
-// Init
-calc();
+function recalcAll(){
+  allProducts.forEach(p => {
+    const r = calcCRR(p.price);
+    Object.assign(p, r);
+  });
+  updateSummary();
+  renderTable(allProducts);
+  document.getElementById('summaryRow').style.display = 'grid';
+  document.getElementById('actionsBar').style.display = 'flex';
+  document.getElementById('exportBtn').disabled = false;
+}
+
+// ── Summary ───────────────────────────────────────────────
+function updateSummary(){
+  const n = allProducts.length;
+  const avgCRR = allProducts.reduce((a,p)=>a+p.crr,0)/n;
+  const avgPV = allProducts.filter(p=>p.pvConseille).reduce((a,p)=>a+(p.pvConseille||0),0)/(allProducts.filter(p=>p.pvConseille).length||1);
+  const margin = getP('p_margin');
+  document.getElementById('s_produits').textContent = f0(n);
+  document.getElementById('s_crr_moy').textContent = '€ ' + f2s(avgCRR);
+  document.getElementById('s_margin_moy').textContent = margin + ' %';
+  document.getElementById('s_pv_moy').textContent = '€ ' + f2s(avgPV);
+}
+
+// ── Table Render ──────────────────────────────────────────
+function categoryPill(name){
+  const n = name.toLowerCase();
+  if(n.includes('kinder')||n.includes('nutella')||n.includes('ferrero')||n.includes('choco')||n.includes('wafer')||n.includes('snickers')||n.includes('twix')||n.includes('mars')||n.includes('bounty')) return '<span class="pill pill-choco">🍫 Choco</span>';
+  if(n.includes('monster')||n.includes('redbull')||n.includes('pokka')||n.includes('pepsi')||n.includes('cola')||n.includes('drink')||n.includes('boisson')||n.includes('juice')||n.includes('jus')) return '<span class="pill pill-drink">🥤 Boisson</span>';
+  if(n.includes('chip')||n.includes('snack')||n.includes('cracker')||n.includes('popcorn')||n.includes('biscuit')||n.includes('cookie')||n.includes('pretzel')) return '<span class="pill pill-snack">🍿 Snack</span>';
+  return '<span class="pill pill-other">📦 Autre</span>';
+}
+
+function bbdClass(bbdStr){
+  if(!bbdStr) return '';
+  // Try to parse date
+  const parts = bbdStr.split(/[-\/\.]/);
+  if(parts.length >= 3){
+    let d;
+    // Handle DD/MM/YYYY or YYYY-MM-DD
+    if(parts[0].length === 4) d = new Date(parts[0], parts[1]-1, parts[2]);
+    else d = new Date(parts[2], parts[1]-1, parts[0]);
+    if(!isNaN(d)){
+      const diff = (d - new Date()) / (1000*60*60*24);
+      if(diff < 90) return 'urgent';
+      if(diff < 180) return 'warn';
+      return 'ok';
+    }
+  }
+  return '';
+}
+
+let currentData = [];
+function filterTable(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = q ? allProducts.filter(p =>
+    p.product.toLowerCase().includes(q) ||
+    p.producer.toLowerCase().includes(q) ||
+    String(p.barcode).includes(q)
+  ) : allProducts;
+  renderTable(filtered);
+}
+
+function sortTable(col){
+  if(sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  filterTable();
+}
+
+function renderTable(data){
+  currentData = [...data];
+  if(sortCol){
+    currentData.sort((a,b) => {
+      const av = a[sortCol]||0, bv = b[sortCol]||0;
+      return typeof av === 'string' ? av.localeCompare(bv)*sortDir : (av-bv)*sortDir;
+    });
+  }
+
+  const cols = [
+    {key:'producer', label:'Marque'},
+    {key:'product', label:'Produit'},
+    {key:'barcode', label:'EAN/Code'},
+    {key:'price', label:'Prix FCA (€)'},
+    {key:'crr', label:'CRR Réunion (€)'},
+    {key:'pvConseille', label:'PV conseillé (€)'},
+    {key:'bbd', label:'DLC'},
+    {key:'pallets', label:'Palettes'},
+    {key:'', label:'Détail'},
+  ];
+
+  const thead = cols.map(c => {
+    const cls = sortCol===c.key ? (sortDir===1?'sort-asc':'sort-desc') : '';
+    return `<th class="${cls}" onclick="${c.key?`sortTable('${c.key}')`:''}">  ${c.label}</th>`;
+  }).join('');
+
+  const tbody = currentData.map(p => {
+    const bbdCls = bbdClass(p.bbd);
+    const crr = p.crr;
+    const pv = p.pvConseille;
+    return `<tr>
+      <td><div class="td-producer">${p.producer}</div>${categoryPill(p.product+' '+p.producer)}</td>
+      <td class="td-product">${p.product}</td>
+      <td class="td-barcode">${p.barcode||'—'}</td>
+      <td class="td-price">€ ${f2(p.price)}</td>
+      <td class="td-crr">€ ${f2(crr)}</td>
+      <td class="td-price" style="color:var(--green)">${pv ? '€ '+f2(pv) : '—'}</td>
+      <td class="td-bbd ${bbdCls}">${p.bbd||'—'}</td>
+      <td style="font-family:var(--mono);font-size:11px">${p.pallets||'—'}</td>
+      <td><button class="btn btn-secondary" style="padding:5px 10px;font-size:11px" onclick="showDetail(${p.id})">🔍 Voir</button></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('tableWrap').innerHTML = `
+    <div class="table-header">
+      <span class="table-title">📋 Résultats CRR — ${currentData.length} produit${currentData.length>1?'s':''}</span>
+      <span class="table-count">Cliquer sur un en-tête pour trier · Cliquer "Voir" pour le détail complet</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>
+    </div>`;
+}
+
+// ── Detail Popup ──────────────────────────────────────────
+function showDetail(id){
+  const p = allProducts.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('popup-title').textContent = p.product;
+  const qte = getP('p_qte');
+  const fret = getP('p_fret');
+  const rows = [
+    {l:'Prix achat FCA fournisseur', v:'€ '+f2(p.price)},
+    {l:`Fret maritime réparti (${f0(qte)} un.)`, v:'€ '+f2(p.fretUnit)},
+    {l:`Droit de douane (${getP('p_dd')}% × CAF)`, v:'€ '+f2(p.droitDD), hl:true},
+    {l:`Octroi de Mer (${getP('p_om')}% × CAF)`, v:'€ '+f2(p.omUnit), hl:true},
+    {l:`OM Régional (${getP('p_omr')}% × CAF)`, v:'€ '+f2(p.omrUnit), hl:true},
+    {l:`TVA import autoliquidée (${getP('p_tva')}%)`, v:'€ '+f2(p.tvaUnit)},
+    {l:`Transit DSG réparti`, v:'€ '+f2(p.dsgUnit)},
+    {l:'Stickering étiquetage FR', v:'€ '+f2(p.stkUnit)},
+    {l:'🎯 CRR TOTAL rendu La Possession', v:'€ '+f2(p.crr), total:true},
+    {l:`PV conseillé (${getP('p_margin')}% marge)`, v: p.pvConseille ? '€ '+f2(p.pvConseille) : '—'},
+    {l:'Valeur CAF / unité', v:'€ '+f2(p.valCAF)},
+  ];
+  document.getElementById('popup-body').innerHTML = rows.map(r=>`
+    <div class="detail-item ${r.total?'total':''} ${r.hl?'hl':''}">
+      <span class="detail-label">${r.l}</span>
+      <span class="detail-val">${r.v}</span>
+    </div>`).join('') +
+    `<div style="margin-top:1rem;padding:12px;background:var(--bg);border-radius:10px;font-size:11px;color:var(--text3)">
+      <strong style="color:var(--text2);display:block;margin-bottom:4px">Informations produit</strong>
+      EAN : ${p.barcode||'—'} · Pcs/carton : ${p.pcsCase||'—'} · Pcs/palette : ${p.pcsPallet||'—'}<br>
+      DLC : ${p.bbd||'—'} · Palettes dispo : ${p.pallets||'—'}<br>
+      ${p.notes ? 'Notes : '+p.notes : ''}
+    </div>`;
+  document.getElementById('popup').classList.add('open');
+}
+
+function closePopup(e){
+  if(e.target.id==='popup') document.getElementById('popup').classList.remove('open');
+}
+
+// ── Export Excel ──────────────────────────────────────────
+function exportExcel(){
+  if(!allProducts.length) return;
+  const qte = getP('p_qte');
+  const rows = currentData.map(p => ({
+    'Marque': p.producer,
+    'Produit': p.product,
+    'EAN': p.barcode,
+    'Prix FCA (€)': p.price,
+    'Fret/unité (€)': +(p.fretUnit||0).toFixed(4),
+    'Droit douane (€)': +(p.droitDD||0).toFixed(4),
+    'Octroi de Mer (€)': +(p.omUnit||0).toFixed(4),
+    'OM Régional (€)': +(p.omrUnit||0).toFixed(4),
+    'TVA import (€)': +(p.tvaUnit||0).toFixed(4),
+    'Transit DSG (€)': +(p.dsgUnit||0).toFixed(4),
+    'Stickering (€)': +(p.stkUnit||0).toFixed(4),
+    'CRR La Possession (€)': +(p.crr||0).toFixed(4),
+    'PV conseillé (€)': p.pvConseille ? +(p.pvConseille).toFixed(4) : '',
+    'DLC': p.bbd,
+    'Palettes dispo': p.pallets,
+    'Pcs/carton': p.pcsCase,
+    'Pcs/palette': p.pcsPallet,
+  }));
+
+  const params = [{
+    'Paramètre': 'Octroi de Mer', 'Valeur': getP('p_om')+'%',
+  },{
+    'Paramètre': 'OM Régional', 'Valeur': getP('p_omr')+'%',
+  },{
+    'Paramètre': 'Droit de douane', 'Valeur': getP('p_dd')+'%',
+  },{
+    'Paramètre': 'TVA import', 'Valeur': getP('p_tva')+'%',
+  },{
+    'Paramètre': 'Fret maritime', 'Valeur': '€ '+getP('p_fret'),
+  },{
+    'Paramètre': 'Transit DSG total', 'Valeur': '€ '+getP('p_dsg'),
+  },{
+    'Paramètre': 'Qté conteneur', 'Valeur': getP('p_qte')+' unités',
+  },{
+    'Paramètre': 'Marge cible', 'Valeur': getP('p_margin')+'%',
+  },{
+    'Paramètre': 'Date export', 'Valeur': new Date().toLocaleDateString('fr-FR'),
+  }];
+
+  const wb = XLSX.utils.book_new();
+  const ws1 = XLSX.utils.json_to_sheet(rows);
+  const ws2 = XLSX.utils.json_to_sheet(params);
+
+  // Style header row
+  const range = XLSX.utils.decode_range(ws1['!ref']);
+  for(let C = range.s.c; C <= range.e.c; C++){
+    const addr = XLSX.utils.encode_cell({r:0, c:C});
+    if(!ws1[addr]) continue;
+  }
+
+  XLSX.utils.book_append_sheet(wb, ws1, 'CRR Produits');
+  XLSX.utils.book_append_sheet(wb, ws2, 'Paramètres CRR');
+
+  const date = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `INCA_IMPORT_CRR_${date}.xlsx`);
+}
+
+// ── Misc ──────────────────────────────────────────────────
+function setStatus(msg, isError){
+  const el = document.getElementById('statusBar');
+  el.textContent = msg;
+  el.className = 'status-bar' + (isError?' error':'');
+}
+
+function resetFile(){
+  allProducts = [];
+  document.getElementById('fileInput').value = '';
+  document.getElementById('tableWrap').innerHTML = `<div class="empty"><div class="empty-ico">📋</div><div class="empty-title">Aucun fichier chargé</div><div class="empty-sub">Importez votre offre fournisseur pour calculer automatiquement les CRR</div></div>`;
+  document.getElementById('summaryRow').style.display = 'none';
+  document.getElementById('actionsBar').style.display = 'none';
+  document.getElementById('exportBtn').disabled = true;
+  document.getElementById('statusBar').className = 'status-bar hidden';
+}
 </script>
 </body>
 </html>
