@@ -17,6 +17,7 @@
   --orange:#f59e0b;--orange-s:rgba(245,158,11,.15);
   --red:#ef4444;--red-s:rgba(239,68,68,.12);
   --purple:#a78bfa;--purple-s:rgba(167,139,250,.15);
+  --gold:#b8924a;
   --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
   --mono:'JetBrains Mono',monospace;--sans:'Plus Jakarta Sans',sans-serif;
   --r:10px;--r2:14px;--sh:0 4px 24px rgba(0,0,0,.4);
@@ -31,12 +32,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .ola{background:rgba(79,142,247,.2);color:#4f8ef7;border:1px solid rgba(79,142,247,.3)}
 .total{background:rgba(16,185,129,.2);color:#10b981;border:1px solid rgba(16,185,129,.3)}
 .vito{background:rgba(245,158,11,.2);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+.ref-badge{background:rgba(184,146,74,.15);color:var(--gold);border:1px solid rgba(184,146,74,.3);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px}
 .drop-wrap{padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px)}
 .drop-zone{width:100%;max-width:700px;border:2px dashed var(--border2);border-radius:20px;padding:4rem 2rem;text-align:center;cursor:pointer;transition:all .3s;background:var(--bg2)}
 .drop-zone:hover,.drag-over{border-color:#4f8ef7!important;background:rgba(79,142,247,.08)!important}
 .drop-icon{font-size:52px;margin-bottom:1rem;opacity:.6}
 .drop-title{font-size:22px;font-weight:800;margin-bottom:.5rem}
-.drop-sub{font-size:13px;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1.5rem}
+.drop-sub{font-size:13px;color:var(--text2);font-weight:500;line-height:1.7;margin-bottom:1rem}
+.ref-info{background:rgba(184,146,74,.08);border:1px solid rgba(184,146,74,.25);border-radius:10px;padding:10px 14px;margin-bottom:1.5rem;font-size:11px;color:#d4a661;line-height:1.6;text-align:left}
+.ref-info b{color:#e6bb6a}
 .drop-formats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
 .fmt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:10px;font-weight:700;color:var(--text2);letter-spacing:.5px;text-transform:uppercase}
 .drop-btn{padding:11px 28px;background:linear-gradient(135deg,#4f8ef7,#6ba3f8);border:none;border-radius:10px;color:#fff;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(79,142,247,.3)}
@@ -60,14 +64,20 @@ input[type=file]{display:none}
 .station-sel{display:flex;gap:8px;flex-wrap:wrap}
 .st-btn{padding:7px 18px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
 .st-btn.act{border-color:#4f8ef7;color:#4f8ef7;background:rgba(79,142,247,.12)}
+.rot-sel{display:flex;gap:6px;align-items:center;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px}
+.rot-lbl{font-size:10px;font-weight:700;color:var(--text2);padding:0 10px;letter-spacing:.5px;text-transform:uppercase}
+.rot-btn{padding:5px 12px;border-radius:14px;border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.rot-btn.act{background:var(--gold);color:#0a0e1a}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:1.5rem}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1rem 1.25rem;box-shadow:var(--sh);animation:fi .4s ease both}
+.kpi.gold{border-color:rgba(184,146,74,.3);background:linear-gradient(135deg,var(--bg2) 0%,rgba(184,146,74,.05) 100%)}
 .kpi-ico{font-size:18px;margin-bottom:.5rem}
 .kpi-v{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
 .kpi-l{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
 .kpi-delta{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;display:inline-block}
 .dg{background:rgba(16,185,129,.18);color:#10b981}
 .db{background:rgba(79,142,247,.15);color:#4f8ef7}
+.dgold{background:rgba(184,146,74,.18);color:var(--gold)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 @media(max-width:850px){.grid2{grid-template-columns:1fr}}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.25rem;box-shadow:var(--sh);margin-bottom:1rem;animation:fi .4s ease both}
@@ -76,6 +86,7 @@ input[type=file]{display:none}
 .ct-g{border-color:#10b981}
 .ct-o{border-color:#f59e0b}
 .ct-p{border-color:#a78bfa}
+.ct-gold{border-color:var(--gold)}
 .prod-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:var(--bg3);margin-bottom:5px}
 .prod-row:hover{background:var(--bg4)}
 .prod-rank{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:18px;text-align:center}
@@ -83,6 +94,8 @@ input[type=file]{display:none}
 .prod-bar{flex:0 0 70px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
 .prod-bar-f{height:4px;border-radius:2px;transition:width .5s}
 .prod-val{font-family:var(--mono);font-size:11px;font-weight:700;min-width:60px;text-align:right}
+.prod-px{font-family:var(--mono);font-size:10px;color:var(--gold);min-width:50px;text-align:right;font-weight:700}
+.prod-fourn{font-size:9px;color:var(--text3);min-width:90px;text-align:right;font-weight:600}
 .fam-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:var(--bg3);margin-bottom:5px}
 .fam-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .fam-name{flex:1;font-size:12px;font-weight:600}
@@ -97,6 +110,25 @@ input[type=file]{display:none}
 .st-card-val{font-family:var(--mono);font-size:18px;font-weight:700;margin-bottom:2px}
 .st-card-sub{font-size:10px;color:var(--text2)}
 .imp-alert{background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;font-size:12px;font-weight:600;color:#6ba3f8;line-height:1.6}
+.reassort-table{width:100%;border-collapse:collapse;font-size:11px}
+.reassort-table thead th{text-align:left;padding:10px 8px;font-size:10px;font-weight:700;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--border2);background:var(--bg3)}
+.reassort-table thead th.num{text-align:right}
+.reassort-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+.reassort-table tbody tr:hover{background:var(--bg3)}
+.reassort-table tbody td{padding:9px 8px;vertical-align:middle}
+.reassort-table tbody td.num{text-align:right;font-family:var(--mono);font-weight:600}
+.reassort-prod{font-size:11px;font-weight:700;color:var(--text)}
+.reassort-fmt{font-size:9px;color:var(--text3);font-weight:500;margin-top:1px}
+.reassort-fourn{font-size:10px;color:var(--text2);font-weight:500}
+.reassort-px{color:var(--gold)}
+.reassort-budg{color:#10b981;font-weight:700}
+.reassort-qty{color:#4f8ef7;font-weight:700}
+.summary-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1rem}
+.sum-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px}
+.sum-lbl{font-size:9px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.sum-val{font-family:var(--mono);font-size:16px;font-weight:700}
+.match-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;background:rgba(184,146,74,.18);color:var(--gold);margin-left:6px}
+.no-match{font-size:9px;color:var(--text3);font-style:italic}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
@@ -108,11 +140,12 @@ input[type=file]{display:none}
   <div class="hdr-l">
     <div class="logo">INCA IMPORT</div>
     <div>
-      <div class="hdr-title">Dashboard Ventes</div>
-      <div class="hdr-sub">Groupe INCANA · Analyse consolidée · Glisse tes exports</div>
+      <div class="hdr-title">Dashboard Ventes &amp; Réassort</div>
+      <div class="hdr-sub">Groupe INCANA · Couplé au référentiel <b>PRIX D'ACHATS 2026</b></div>
     </div>
   </div>
-  <div style="display:flex;gap:6px">
+  <div style="display:flex;gap:6px;align-items:center">
+    <span class="ref-badge">📋 229 articles référencés</span>
     <span class="sbadge ola">OLA</span>
     <span class="sbadge total">TOTAL</span>
     <span class="sbadge vito">VITO</span>
@@ -124,6 +157,10 @@ input[type=file]{display:none}
     <div class="drop-icon">📊</div>
     <div class="drop-title">Glisse tes exports de ventes ici</div>
     <div class="drop-sub">Dépose les fichiers Excel des 3 stations OLA, TOTAL et VITO<br>Format : "Ventes par familles" — exports de ton logiciel de caisse</div>
+    <div class="ref-info">
+      💡 <b>Couplé au référentiel PRIX D'ACHATS 2026</b><br>
+      Chaque article vendu est automatiquement matché avec son <b>prix d'achat actuel</b> et son <b>fournisseur</b> via les 229 articles du référentiel. Le dashboard affichera la <b>quantité à commander pour une rotation de 3 mois</b> + le budget réassort.
+    </div>
     <div class="drop-formats">
       <span class="fmt">.xlsx</span>
       <span class="fmt">.xls</span>
@@ -139,23 +176,38 @@ input[type=file]{display:none}
 <div class="dashboard" id="dashboard">
   <div class="dash-header">
     <div>
-      <div class="dash-title">Analyse Ventes — Groupe INCANA</div>
-      <div class="dash-period" id="dashPeriod">3 stations consolidées</div>
+      <div class="dash-title">Analyse Ventes &amp; Plan de Réassort</div>
+      <div class="dash-period" id="dashPeriod">3 stations consolidées · Référentiel PRIX D'ACHATS 2026</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="rot-sel">
+        <span class="rot-lbl">Rotation</span>
+        <button class="rot-btn" onclick="setRot(2,this)">2 mois</button>
+        <button class="rot-btn act" id="rot3" onclick="setRot(3,this)">3 mois</button>
+        <button class="rot-btn" onclick="setRot(4,this)">4 mois</button>
+        <button class="rot-btn" onclick="setRot(6,this)">6 mois</button>
+      </div>
       <div class="station-sel" id="stSel">
         <button class="st-btn act" onclick="filterSt('all',this)">Toutes</button>
-        <button class="st-btn" id="bOla" onclick="filterSt('ola',this)">OLA</button>
-        <button class="st-btn" id="bTotal" onclick="filterSt('total',this)">TOTAL</button>
-        <button class="st-btn" id="bVito" onclick="filterSt('vito',this)">VITO</button>
+        <button class="st-btn" onclick="filterSt('ola',this)">OLA</button>
+        <button class="st-btn" onclick="filterSt('total',this)">TOTAL</button>
+        <button class="st-btn" onclick="filterSt('vito',this)">VITO</button>
       </div>
       <button class="btn-reset" onclick="resetDB()">↩ Nouveau fichier</button>
     </div>
   </div>
   <div class="kpi-grid" id="kpiGrid"></div>
   <div class="grid2">
-    <div class="card"><div class="card-title ct-b">Top 10 produits — volume</div><div id="topVol"></div></div>
-    <div class="card"><div class="card-title ct-g">Top 10 produits — marge €</div><div id="topMg"></div></div>
+    <div class="card"><div class="card-title ct-b">Top 10 produits — volume <span style="color:var(--gold);font-weight:700">+ prix d'achat</span></div><div id="topVol"></div></div>
+    <div class="card"><div class="card-title ct-g">Top 10 produits — marge € <span style="color:var(--gold);font-weight:700">+ prix d'achat</span></div><div id="topMg"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title ct-gold">📦 Plan de réassort <span id="rotLabel">3 mois</span> — articles matchés au référentiel</div>
+    <div class="imp-alert" style="background:rgba(184,146,74,.08);border-color:rgba(184,146,74,.2);color:#d4a661">
+      💡 Pour chaque article vendu identifié dans <b>PRIX D'ACHATS 2026</b> : quantité à commander = ventes annuelles ÷ 12 × rotation. Budget = quantité × prix d'achat actuel.
+    </div>
+    <div class="summary-strip" id="reassortSummary"></div>
+    <div style="overflow-x:auto;max-height:600px;overflow-y:auto"><table class="reassort-table" id="reassortTable"></table></div>
   </div>
   <div class="card"><div class="card-title ct-o">Familles produits — CA et marge %</div><div id="famRows"></div></div>
   <div class="grid2">
@@ -174,6 +226,9 @@ input[type=file]{display:none}
 </div>
 
 <script>
+// ============ RÉFÉRENTIEL PRIX D'ACHATS 2026 (229 articles) ============
+const PRIX_REF = [{"a":"ALOE VERA OKF TPF","f":"50.00 CL BOUTEILLE","p":0.98,"s":"ASD SARL","d":"2026-04-22","pv":2.6,"n":7},{"a":"ARIZONA 50 TPF","f":"","p":1.57,"s":"SIDISRUN","d":"2026-03-18","pv":3.2,"n":2},{"a":"BAGATELLE 5L","f":"5.00 L BOUT*","p":1.46,"s":"PHOENIX REUNION johan","d":"2024-03-30","pv":3.2,"n":2},{"a":"BASIL SEED","f":"30.00 CL BOUTEILLE","p":0.73,"s":"DIVERS FOURNISSEURS","d":"2025-04-24","pv":2.1,"n":4},{"a":"BIG COLA","f":"1.60 L BOUTEILLE","p":2.18,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":3.3,"n":5},{"a":"BIG COLA","f":"60.00 CL BOUTEILLE","p":0.96,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":1.7,"n":5},{"a":"BISSAP JUS ARTISANAL","f":"25.00 CL BOCAL","p":1.21,"s":"DIVERS FOURNISSEURS","d":"2026-03-31","pv":2.3,"n":1},{"a":"BLACK BRUIN 250","f":"250.00 ML BTE*","p":0.77,"s":"DIVERS FOURNISSEURS","d":"2023-12-18","pv":1.9,"n":1},{"a":"BLACK BRUIN 500","f":"500.00 ML BTE*","p":1.18,"s":"DIVERS FOURNISSEURS","d":"2023-09-09","pv":2.5,"n":1},{"a":"BLUE SPORT","f":"","p":0.85,"s":"DIVERS FOURNISSEURS","d":"2025-07-21","pv":2.0,"n":2},{"a":"BOBACO BUBBLE TEA CUP TPF","f":"330.00 ML","p":2.9,"s":"CODISMA","d":"2025-08-26","pv":4.2,"n":1},{"a":"BOISSON DON SIMON","f":"1.50 L BOUT*","p":1.75,"s":"SUPERCASH","d":"2025-09-05","pv":3.5,"n":1},{"a":"BOURBON PANACHE","f":"33.00 CL BOUTEILLE","p":0.85,"s":"SUPERCASH","d":"2025-11-28","pv":1.6,"n":4},{"a":"BUM BUM","f":"250.00 ML BOITE","p":1.17,"s":"CHANE HIVE","d":"2026-02-26","pv":2.5,"n":2},{"a":"BUM BUM 50 CL","f":"50.00 CL BTE*","p":1.91,"s":"CHANE HIVE","d":"2026-02-26","pv":3.1,"n":1},{"a":"BUM BUM POMME SS","f":"25.00 CL BTE*","p":1.2,"s":"CHANE HIVE","d":"2023-12-30","pv":2.5,"n":1},{"a":"CACOLAC","f":"20.00 CL BOUTEILLE","p":1.89,"s":"SUPERCASH","d":"2026-04-15","pv":2.5,"n":5},{"a":"CAFE SWEET BLACK NOIS OKF","f":"390.00 ML BTE*","p":1.21,"s":"DISTRI PROXI OI vincent","d":"2024-12-10","pv":2.3,"n":1},{"a":"CAFEMIO TPF","f":"25.00 ML BOUTEILLE","p":1.69,"s":"LORDIS","d":"2024-02-21","pv":2.9,"n":1},{"a":"CAPRI SUN","f":"33.00 CL FLACON","p":1.13,"s":"GRAND SUD PRDUCTIONS sebastien","d":"2026-02-24","pv":1.9,"n":4},{"a":"CAPRISONNE","f":"","p":0.36,"s":"GRAND SUD PRDUCTIONS sebastien","d":"2026-03-25","pv":1.0,"n":7},{"a":"CARESSE CREOLE 1 L","f":"1.00 L BOUT.","p":5.2,"s":"POINT CHR","d":"2025-01-02","pv":5.9,"n":1},{"a":"CHIEF MILK SHAKE","f":"","p":2.95,"s":"DISTRI PROXI OI vincent","d":"2026-04-15","pv":4.9,"n":1},{"a":"CILAOS","f":"125.00 CL BTL","p":0.92,"s":"CILAOS","d":"2026-04-10","pv":2.3,"n":5},{"a":"CILAOS","f":"50.00 CL PLAS","p":0.49,"s":"CILAOS","d":"2026-04-10","pv":1.5,"n":5},{"a":"CITRO","f":"1.00 L BOUTEILLE","p":2.62,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":3.9,"n":3},{"a":"CITRO PETILLANT TPF","f":"","p":1.6,"s":"PHOENIX REUNION johan","d":"2025-11-29","pv":2.5,"n":3},{"a":"CITRO TPF","f":"50.00 CL BOUT.","p":1.63,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":2.5,"n":3},{"a":"COCA COLA","f":"1.00 L BOUTEILLE","p":1.81,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":2.9,"n":3},{"a":"COCA COLA","f":"1.50 L BTL","p":2.35,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.9,"n":5},{"a":"COCA COLA","f":"50.00 CL PET","p":1.1,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":2.0,"n":5},{"a":"COCA COLA BLE VER","f":"","p":0.7,"s":"RTF","d":"2025-12-08","pv":1.5,"n":2},{"a":"COCA COLA CANETTE","f":"33.00 CL BOITE","p":0.94,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-03","pv":1.9,"n":7},{"a":"COCA COLA CHERRY/VANILLE","f":"33.00 CL","p":0.92,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.9,"n":2},{"a":"COCA COLA VERRE","f":"30.00 CL BOUTEILLE","p":0.95,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.8,"n":6},{"a":"COCA COLA ZERO","f":"1.50 L BOUTEILLE","p":2.22,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-17","pv":3.8,"n":5},{"a":"COCA COLA ZERO","f":"50.00 CL BOUTEILLE","p":1.1,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":2.1,"n":6},{"a":"COCA COLA ZERO VR","f":"","p":0.65,"s":"RTF","d":"2025-05-27","pv":1.5,"n":1},{"a":"COCOMAX GRAND","f":"1.00 L BOUTEILLE","p":2.95,"s":"DIVERS FOURNISSEURS","d":"2025-12-05","pv":4.6,"n":3},{"a":"COCOMAX PETILLANT","f":"310.00 ML","p":0.99,"s":"DISTRI PROXI OI vincent","d":"2026-04-15","pv":1.8,"n":1},{"a":"COCOMAX PETIT","f":"50.00 CL BOUTEILLE","p":1.49,"s":"DIVERS FOURNISSEURS","d":"2026-03-25","pv":2.6,"n":5},{"a":"COLORADO THE","f":"50.00 CL BOITE","p":1.54,"s":"DISTRI PROXI OI vincent","d":"2026-04-01","pv":2.5,"n":2},{"a":"CONTREX","f":"","p":1.19,"s":"RTF","d":"2024-01-31","pv":2.1,"n":1},{"a":"CONTREX","f":"1.00 L BOUTEILLE","p":1.07,"s":"RTF","d":"2025-03-13","pv":2.1,"n":4},{"a":"COT LIMONADE TPF","f":"1.50 L PLAS","p":1.65,"s":"CHAN OU TEUNG","d":"2026-04-13","pv":2.8,"n":4},{"a":"CRISTALINE CITRONNADE 1.5","f":"","p":1.91,"s":"SIDISRUN","d":"2025-12-10","pv":3.5,"n":1},{"a":"CURCUMIN SHOT","f":"","p":1.62,"s":"RTF","d":"2026-04-21","pv":2.2,"n":1},{"a":"DIEGO","f":"20.00 CL POCHE","p":0.5,"s":"POINT CHR","d":"2026-04-16","pv":1.0,"n":3},{"a":"DIEGO TPF","f":"1.00 L BRICK","p":1.98,"s":"POINT CHR","d":"2026-04-01","pv":2.6,"n":1},{"a":"DIEGO/REA","f":"2.00 L BRICK","p":3.5,"s":"POINT CHR","d":"2026-04-16","pv":4.9,"n":3},{"a":"DYNAMALT","f":"33.00 CL BTL","p":1.06,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.8,"n":2},{"a":"EAU AROMATISEE CRISTALINE","f":"50.00 CL BOUT 300","p":0.88,"s":"CODISMA","d":"2024-01-23","pv":1.4,"n":1},{"a":"EAU AUSTRALINE","f":"","p":0.75,"s":"POINT CHR","d":"2025-07-17","pv":2.2,"n":1},{"a":"EAU AUSTRALINE","f":"1.00 L BOUTEILLE","p":0.53,"s":"POINT CHR","d":"2026-04-16","pv":1.6,"n":3},{"a":"EAU AUSTRALINE","f":"1.50 L BOUT.","p":0.65,"s":"POINT CHR","d":"2026-04-16","pv":1.9,"n":4},{"a":"EAU AUSTRALINE","f":"5.00 L BIDON","p":1.76,"s":"POINT CHR","d":"2026-04-16","pv":3.0,"n":3},{"a":"EAU AUSTRALINE","f":"50.00 CL BOUTEILLE","p":0.61,"s":"DIVERS FOURNISSEURS","d":"2026-04-17","pv":1.0,"n":5},{"a":"EAU BAGATELLE","f":"1.60 L BTL","p":0.55,"s":"PHOENIX REUNION johan","d":"2026-04-23","pv":1.5,"n":5},{"a":"EAU EVIAN","f":"1.50 L BTL","p":1.45,"s":"BARCODES","d":"2021-10-26","pv":2.3,"n":3},{"a":"EAU SAN PELLIGRINO","f":"50.00 CL BOUTEILLE","p":0.88,"s":"SIDISRUN","d":"2025-04-10","pv":1.7,"n":4},{"a":"EAU VOLCANIK","f":"1.25 L BOUTEILLE","p":1.15,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":1.8,"n":4},{"a":"EAU VOLCANIK","f":"50.00 CL BOUTEILLE","p":0.66,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":1.5,"n":5},{"a":"EDENA","f":"1.00 L BTL","p":0.61,"s":"PHOENIX REUNION johan","d":"2026-04-03","pv":1.6,"n":5},{"a":"EDENA","f":"1.50 L BTL","p":0.78,"s":"PHOENIX REUNION johan","d":"2026-03-12","pv":1.9,"n":5},{"a":"EDENA","f":"5.00 L BOUTEILLE","p":1.77,"s":"PHOENIX REUNION johan","d":"2026-02-12","pv":3.0,"n":1},{"a":"EDENA","f":"50.00 CL BTL","p":0.65,"s":"DIVERS FOURNISSEURS","d":"2026-04-17","pv":1.0,"n":5},{"a":"EDENA PETILLANTE","f":"1.00 L BTL","p":0.93,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":1.9,"n":5},{"a":"EDENA PETILLANTE","f":"50.00 CL BTL","p":0.63,"s":"PHOENIX REUNION johan","d":"2026-04-14","pv":1.3,"n":4},{"a":"ENERGADE","f":"500.00 ML BTL","p":1.4,"s":"RTF","d":"2026-01-27","pv":2.9,"n":2},{"a":"FANTA ANANAS","f":"","p":1.01,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-07-25","pv":1.9,"n":2},{"a":"FANTA ANANAS GR","f":"","p":2.01,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-02-14","pv":3.6,"n":1},{"a":"FANTA CITRON","f":"","p":0.51,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-04-18","pv":1.0,"n":1},{"a":"FANTA ORANGE","f":"50.00 CL PLAS","p":1.06,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.9,"n":5},{"a":"FANTA ORANGE BOITE","f":"33.00 CL BTE*","p":0.63,"s":"DIVERS FOURNISSEURS","d":"2025-03-25","pv":1.7,"n":2},{"a":"FANTA ORANGE/CITRON","f":"1.50 L BOUTEILL","p":2.44,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.6,"n":5},{"a":"FANTA PASSION","f":"1.50 L BTL","p":2.45,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.6,"n":4},{"a":"FANTA PASSION","f":"50.00 CL PLAS","p":1.08,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-10","pv":1.9,"n":5},{"a":"FISHER PANACHE","f":"33.00 CL BOUTEILLE","p":0.78,"s":"SUPERCASH","d":"2025-11-28","pv":1.6,"n":5},{"a":"FREEZ MIX TPF","f":"27.50 CL BOUT.","p":1.45,"s":"MOLLA AMODE","d":"2023-10-18","pv":2.7,"n":3},{"a":"FRESCHY/MOUSSY PECHE","f":"33.00 ML BOITE","p":1.4,"s":"PHOENIX REUNION johan","d":"2026-01-22","pv":2.5,"n":5},{"a":"FUZE TEA TPF","f":"500.00 ML BOUTEILLE","p":1.21,"s":"PHOENIX REUNION johan","d":"2022-12-15","pv":2.0,"n":2},{"a":"GATORADE","f":"","p":1.73,"s":"RTF","d":"2024-11-12","pv":2.9,"n":2},{"a":"GINGER SHOT","f":"","p":1.62,"s":"RTF","d":"2026-03-17","pv":2.2,"n":1},{"a":"GINI LEMON","f":"33.00 CL BOITE","p":1.15,"s":"SUPERCASH","d":"2022-12-23","pv":1.9,"n":2},{"a":"HEPAR","f":"75.00 CL BOUT PLA","p":1.44,"s":"RTF","d":"2026-04-08","pv":2.1,"n":1},{"a":"HERBI TEA TAMARIN","f":"","p":0.71,"s":"RTF","d":"2024-09-06","pv":2.0,"n":1},{"a":"HYPE ENERGY DRINK","f":"25.00 CL BTE*","p":1.24,"s":"PHOENIX REUNION johan","d":"2024-10-15","pv":2.9,"n":1},{"a":"ICE COFFE VIENNA TPF","f":"230.00 ML GOBELET","p":1.66,"s":"SIDISRUN","d":"2026-04-15","pv":2.6,"n":3},{"a":"ICE TEA EXOTIQUE  LIPTON","f":"33.00 CL BOITE","p":1.28,"s":"SUPERCASH","d":"2026-04-08","pv":1.9,"n":4},{"a":"ICE TEA GREEN AGRUMES","f":"50.00 CL BOUTEILL","p":1.07,"s":"CHANE HIVE","d":"2021-06-05","pv":2.2,"n":2},{"a":"ICE TEA LIPTON","f":"50.00 CL PET","p":1.45,"s":"RTF","d":"2026-04-08","pv":2.5,"n":5},{"a":"ICE TEA LIPTONIC","f":"33.00 CL BOITE","p":0.94,"s":"RTF","d":"2026-04-08","pv":1.9,"n":6},{"a":"ICE TEA PECHE","f":"33.00 CL BOITE","p":0.73,"s":"RTF","d":"2021-12-15","pv":1.7,"n":2},{"a":"IF COCO GM","f":"1.00 L BOUT*","p":2.5,"s":"RTF","d":"2022-02-16","pv":3.9,"n":1},{"a":"IF COCO/PASTEQUE/RAISIN","f":"350.00 ML BOUT 300","p":1.12,"s":"SOLO IMPORT","d":"2026-03-17","pv":1.8,"n":4},{"a":"INFUSION BIO TPF","f":"330.00 ML BRICK","p":1.77,"s":"DISTRI PROXI OI vincent","d":"2023-05-31","pv":2.6,"n":1},{"a":"JOKER LE FRUIT","f":"1.00 L BRICK","p":2.65,"s":"RTF","d":"2025-06-05","pv":5.6,"n":1},{"a":"JUS CARESSE CREOLE","f":"","p":1.66,"s":"POINT CHR","d":"2024-08-29","pv":2.3,"n":1},{"a":"JUS FEEL MORE DIMES","f":"","p":1.2,"s":"MOLLA AMODE","d":"2023-10-18","pv":2.0,"n":1},{"a":"JUS GRANINI","f":"25.00 CL BTL","p":1.14,"s":"CODISMA","d":"2025-11-04","pv":1.9,"n":4},{"a":"JUS LOOZA TPF","f":"20.00 CL BTLLE","p":0.73,"s":"MOLLAN","d":"2022-05-19","pv":1.7,"n":1},{"a":"JUS MANGO","f":"50.00 CL BOUTEILLE","p":0.64,"s":"DIVERS FOURNISSEURS","d":"2024-05-02","pv":1.7,"n":3},{"a":"JUS SPRING VALLEY","f":"33.00 CL BTE*","p":0.9,"s":"SOLO IMPORT","d":"2025-05-13","pv":1.6,"n":1},{"a":"KALAO 2L TPF","f":"2.00 L BOUTEILLE","p":2.43,"s":"POINT CHR","d":"2021-09-01","pv":3.5,"n":1},{"a":"KALAO TPF","f":"45.00 CL BOUTEILLE","p":0.95,"s":"POINT CHR","d":"2022-11-30","pv":1.6,"n":2},{"a":"KOOL KOOL TPF","f":"","p":0.35,"s":"RTF","d":"2024-09-06","pv":1.6,"n":1},{"a":"LA PATAT","f":"250.00 ML","p":0.83,"s":"DIVERS FOURNISSEURS","d":"2026-04-09","pv":1.9,"n":1},{"a":"LACTEL MAX TPF","f":"20.00 CL BRICK","p":0.58,"s":"RTF","d":"2024-03-29","pv":1.0,"n":1},{"a":"LE COQ NO ALCOL","f":"33.00 CL BOUT*","p":2.25,"s":"DIVERS FOURNISSEURS","d":"2025-02-21","pv":3.7,"n":1},{"a":"LEAMO LIMONADE","f":"","p":1.89,"s":"DISTRI PROXI OI vincent","d":"2025-03-12","pv":2.9,"n":1},{"a":"LIMONADE COT","f":"33.00 CL BTL","p":0.57,"s":"CHAN OU TEUNG","d":"2026-04-13","pv":1.0,"n":4},{"a":"LIMONADE COT 2L","f":"","p":1.0,"s":"CHAN OU TEUNG","d":"2018-12-04","pv":2.7,"n":1},{"a":"LIMONADE COT 50 CL","f":"","p":0.76,"s":"SUPERCASH","d":"2026-03-06","pv":1.6,"n":3},{"a":"LIMONADE SEGA","f":"50.00 CL BOUTEILLE","p":0.76,"s":"PHOENIX REUNION johan","d":"2026-03-12","pv":1.6,"n":4},{"a":"LIMONICE TPF","f":"50.00 CL BOUTEILLE","p":0.76,"s":"CHANE HIVE","d":"2026-02-26","pv":1.6,"n":2},{"a":"LIMONICE TPF 1.5","f":"","p":1.4,"s":"CHANE HIVE","d":"2026-02-26","pv":2.8,"n":1},{"a":"LIPTON PASTEQUE MENTHE","f":"33.00 CL BTE*","p":0.94,"s":"RTF","d":"2026-04-08","pv":1.9,"n":2},{"a":"LIPTON PETILLANT PECHE","f":"33.00 CL BTE*","p":1.14,"s":"SUPERCASH","d":"2026-04-08","pv":1.9,"n":4},{"a":"LIPTONIC GRD BOUT","f":"1.50 L BOUT PLA","p":3.72,"s":"RTF","d":"2026-04-08","pv":5.2,"n":1},{"a":"MAAZA BRIQUE 33CL","f":"33.00 CL BRICK","p":1.36,"s":"CHANE HIVE","d":"2023-11-07","pv":2.2,"n":1},{"a":"MAAZA FRUIT PASSION","f":"50.00 CL BOUT PLA","p":1.98,"s":"CHANE HIVE","d":"2025-09-17","pv":2.5,"n":2},{"a":"MAAZA LETCHIS","f":"50.00 CL BOUT PLA","p":1.69,"s":"RTF","d":"2025-02-19","pv":2.5,"n":1},{"a":"MAAZA MANGUE","f":"50.00 CL BOUT PLA","p":1.79,"s":"CHANE HIVE","d":"2025-12-24","pv":2.5,"n":2},{"a":"MAAZA TPF","f":"33.00 CL BOUTEILL","p":1.67,"s":"CHANE HIVE","d":"2025-05-20","pv":2.5,"n":3},{"a":"MAAZA TROPICAL","f":"50.00 CL BOUT PLA","p":1.86,"s":"CHANE HIVE","d":"2025-12-24","pv":2.5,"n":2},{"a":"MAXBREWCAFE GLACE","f":"250.00 ML","p":1.48,"s":"DISTRI PROXI OI vincent","d":"2026-03-17","pv":2.8,"n":1},{"a":"MAXFLY NRJ","f":"250.00 ML","p":1.18,"s":"DISTRI PROXI OI vincent","d":"2026-04-15","pv":2.2,"n":1},{"a":"MAY TEA TPF","f":"","p":2.81,"s":"SOGEREP","d":"2022-06-28","pv":4.2,"n":1},{"a":"MAY TEA TPF","f":"33.00 CL BOIT","p":0.98,"s":"SOGEREP","d":"2020-11-06","pv":1.9,"n":1},{"a":"MIAMI SOUL","f":"250.00 ML BTE*","p":1.24,"s":"DIVERS FOURNISSEURS","d":"2023-04-21","pv":2.5,"n":1},{"a":"MINUTE MAID ORANGE","f":"33.00 CL BOITE","p":1.1,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.9,"n":4},{"a":"MINUTE MAID POMME","f":"33.00 CL BOITE","p":1.1,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.9,"n":4},{"a":"MINUTE MAID TROPICAL","f":"33.00 CL BOITE","p":1.12,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-03","pv":1.9,"n":3},{"a":"MONSTER ENERGY","f":"50.00 CL BOITDE","p":1.72,"s":"CODISMA","d":"2026-04-14","pv":3.9,"n":9},{"a":"MOUSSY FRAISE","f":"33.00 ML BOITE","p":1.4,"s":"PHOENIX REUNION johan","d":"2025-10-30","pv":2.5,"n":5},{"a":"NAW JUS TAMARIN","f":"33.00 CL BOIT","p":0.94,"s":"SODIREL","d":"2026-03-05","pv":1.5,"n":1},{"a":"NAW JUS TPF","f":"","p":0.97,"s":"SODIREL","d":"2026-04-16","pv":1.5,"n":1},{"a":"NECTAR LES VERGERS DE MARIE","f":"","p":2.65,"s":"DIVERS FOURNISSEURS","d":"2024-09-02","pv":3.9,"n":1},{"a":"NOYA BOISSON CHIA","f":"320.00 ML BOUT P","p":1.6,"s":"SODIREL","d":"2023-05-12","pv":2.9,"n":1},{"a":"NU SMOOTHIES","f":"33.00 CL BRICK","p":1.54,"s":"DISTRI PROXI OI vincent","d":"2021-11-25","pv":2.8,"n":1},{"a":"OASIS  BOITE","f":"50.00 CL BOITE","p":0.98,"s":"SUPERCASH","d":"2021-12-28","pv":1.8,"n":2},{"a":"OASIS 1L","f":"1.00 L BOUTEILLE","p":2.22,"s":"SOGEREP","d":"2026-04-02","pv":3.3,"n":4},{"a":"OASIS BOUTEILLE","f":"50.00 CL BOUTEILLE","p":1.36,"s":"SOGEREP","d":"2026-04-23","pv":2.2,"n":7},{"a":"OASIS CANETTE TPF","f":"33.00 CL BOITE","p":1.07,"s":"SOGEREP","d":"2026-04-23","pv":1.8,"n":4},{"a":"OASIS POCKET","f":"25.00 CL BOUTEILLE","p":0.89,"s":"SOGEREP","d":"2026-04-03","pv":1.5,"n":2},{"a":"OASIS THE","f":"","p":2.59,"s":"SOGEREP","d":"2026-02-03","pv":3.9,"n":1},{"a":"OASIS TPF BOUTEILLE","f":"2.00 L BOUTEILLE","p":3.13,"s":"SOGEREP","d":"2026-04-03","pv":4.9,"n":3},{"a":"ORANGINA","f":"1.50 L PLAS","p":2.69,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.9,"n":6},{"a":"ORANGINA","f":"50.00 CL BOUTEILLE","p":1.24,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":2.3,"n":6},{"a":"ORANGINA BOULE","f":"25.00 CL PLAS","p":1.33,"s":"SUPERCASH","d":"2026-01-21","pv":1.9,"n":5},{"a":"ORANGINA CANETTE","f":"33.00 CL BTE*","p":1.18,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-03-27","pv":1.9,"n":2},{"a":"PEPSI COLA ZERO","f":"50.00 CL BOUT.","p":0.88,"s":"CHANE HIVE","d":"2024-10-11","pv":2.1,"n":1},{"a":"PEPSI GRAND","f":"","p":2.43,"s":"CHANE HIVE","d":"2024-08-16","pv":3.7,"n":1},{"a":"PERRIER","f":"1.00 L BTL","p":1.22,"s":"RTF","d":"2026-03-17","pv":2.8,"n":7},{"a":"PERRIER","f":"20.00 CL BTL","p":0.85,"s":"RTF","d":"2025-12-08","pv":1.3,"n":3},{"a":"PERRIER & JUICE","f":"25.00 CL BTE*","p":1.26,"s":"RTF","d":"2025-07-22","pv":1.9,"n":6},{"a":"PERRIER CITRON","f":"","p":1.54,"s":"RTF","d":"2026-04-08","pv":2.9,"n":1},{"a":"PERRIER CITRON 50","f":"","p":1.12,"s":"RTF","d":"2026-04-08","pv":1.9,"n":1},{"a":"PERRIER NAT/CITRON","f":"33.00 CL CANETTE","p":0.71,"s":"RTF","d":"2024-12-27","pv":1.7,"n":1},{"a":"PERRIER VERRE","f":"33.00 CL BOUT.","p":0.98,"s":"RTF","d":"2026-02-19","pv":1.5,"n":3},{"a":"PHOENIX PANACHE","f":"33.00 CL BOUTEILLE","p":1.04,"s":"SUPERCASH","d":"2025-11-14","pv":2.2,"n":3},{"a":"PREDATOR GOLD","f":"50.00 CL","p":0.98,"s":"SIDISRUN","d":"2024-01-25","pv":2.5,"n":1},{"a":"REA ANANAS","f":"1.00 L BRQ","p":2.06,"s":"POINT CHR","d":"2024-03-13","pv":2.9,"n":1},{"a":"REA BOCAL 1L","f":"1.00 L BOUT.","p":2.75,"s":"POINT CHR","d":"2023-11-16","pv":4.1,"n":1},{"a":"REA EXOTIQUE/MULTI","f":"1.00 L BRQ","p":2.36,"s":"POINT CHR","d":"2025-08-15","pv":3.3,"n":3},{"a":"REA MANGUE","f":"1.00 L BRIQUE","p":2.15,"s":"POINT CHR","d":"2025-03-17","pv":2.9,"n":2},{"a":"REA ORANGE","f":"1.00 L BRQ","p":1.95,"s":"POINT CHR","d":"2023-11-16","pv":2.9,"n":1},{"a":"REA PLASTIQ","f":"25.00 CL BOUTEILLE","p":1.0,"s":"POINT CHR","d":"2023-07-19","pv":1.8,"n":2},{"a":"REA POMME","f":"1.00 L BRIQ","p":2.06,"s":"POINT CHR","d":"2024-04-03","pv":2.9,"n":2},{"a":"REA RAISIN ROUGE","f":"1.00 L BRQ","p":1.72,"s":"POINT CHR","d":"2023-01-18","pv":2.9,"n":2},{"a":"REA VERRE TPF","f":"25.00 CL BTL","p":1.12,"s":"POINT CHR","d":"2026-04-16","pv":1.9,"n":4},{"a":"RED BULL SHOT","f":"","p":1.25,"s":"RTF","d":"2026-01-06","pv":2.5,"n":1},{"a":"REDBULL","f":"355.00 ML BOITE","p":2.06,"s":"SOLO IMPORT","d":"2023-09-26","pv":3.9,"n":1},{"a":"REDBULL TPF","f":"250.00 ML","p":1.5,"s":"SOLO IMPORT","d":"2026-02-10","pv":2.9,"n":2},{"a":"RICQLES","f":"33.00 CL BOITE","p":1.13,"s":"SUPERCASH","d":"2021-10-25","pv":1.9,"n":2},{"a":"SAMBO TS PARFUM","f":"33.00 CL BOITE","p":0.88,"s":"SOLO IMPORT","d":"2026-04-21","pv":2.0,"n":7},{"a":"SAN BENEDETTO BTE TPF 33","f":"33.00 CL BTE*","p":1.03,"s":"CHANE HIVE","d":"2024-09-06","pv":1.9,"n":1},{"a":"SANPELL LIMON + ARANC","f":"33.00 CL BTE*","p":1.03,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2024-12-13","pv":1.9,"n":4},{"a":"SANTAL AMANDE LAIT","f":"1.00 L BRICK","p":2.95,"s":"RTF","d":"2025-03-13","pv":4.9,"n":1},{"a":"SCHWEPPES AGRUM/LEMN/POM","f":"33.00 CL BOITE","p":1.01,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-17","pv":1.9,"n":2},{"a":"SCHWEPPES AGRUM/POIRE/MOJITO","f":"50.00 CL BOUTEILLE","p":1.25,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-17","pv":2.1,"n":5},{"a":"SCHWEPPES COCO","f":"50.00 CL BOUTEILLE","p":1.25,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-17","pv":2.1,"n":4},{"a":"SCHWEPPES MOJITO SLIM","f":"0.33 CL CANETTE","p":1.01,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-12-12","pv":1.9,"n":2},{"a":"SCHWEPPES TONIC","f":"25.00 ML BTL","p":1.03,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-10","pv":1.8,"n":2},{"a":"SCHWEPPES TONIC PET","f":"50.00 CL BOUT PLA","p":1.25,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":2.1,"n":3},{"a":"SCHWEPPES/S.AGRUM/COCO","f":"1.50 L BTL","p":2.55,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.9,"n":4},{"a":"SEVEN UP","f":"1.50 L BOUTEILLE","p":2.33,"s":"CHANE HIVE","d":"2024-08-16","pv":3.5,"n":2},{"a":"SHAKER TPF","f":"250.00 ML BRICK","p":0.65,"s":"DISTRI PROXI OI vincent","d":"2025-02-05","pv":2.2,"n":1},{"a":"SHOT BISSAP ZANDJABILA","f":"60.00 ML BOCAL","p":1.76,"s":"DIVERS FOURNISSEURS","d":"2026-04-23","pv":3.2,"n":1},{"a":"SIPSTY BLUE HAWAI","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY COLA","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY COLA CHERRY","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY KIWI CITRON SMASH","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY LETCHIS BREEZE","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY MANGUE PECHE BELLINI","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SIPSTY PINA COLADA","f":"275.00 ML BOUT.","p":1.3,"s":"DIVERS FOURNISSEURS","d":"2025-02-10","pv":2.5,"n":1},{"a":"SMOOTHIE ANANAS RAISIN","f":"500.00 ML BOUT PLA","p":1.47,"s":"SODIREL","d":"2026-04-16","pv":2.5,"n":1},{"a":"SMOOTHIE FRAISE PAMPLEMOUSSRE","f":"500.00 ML BOUT PLA","p":1.47,"s":"SODIREL","d":"2026-04-16","pv":2.5,"n":1},{"a":"SMOOTHIE GREEN","f":"500.00 ML BOUT PLA","p":1.47,"s":"SODIREL","d":"2026-04-16","pv":2.5,"n":1},{"a":"SMOOTHIE LFW","f":"350.00 ML PET","p":1.08,"s":"LIM FA WAN ET FILS","d":"2026-04-13","pv":2.5,"n":1},{"a":"SMOOTHIE MYRTILLE NAW","f":"500.00 ML BOUT PLA","p":1.47,"s":"SODIREL","d":"2026-04-16","pv":2.5,"n":1},{"a":"SOJA MILK","f":"300.00 ML BOUTEILLE","p":0.99,"s":"DISTRI PROXI OI vincent","d":"2025-02-05","pv":1.9,"n":2},{"a":"SOLPAK BERLINGOT","f":"20.00 CL","p":0.43,"s":"SOLPAK QB","d":"2022-06-29","pv":1.0,"n":3},{"a":"SOLPAK TPF 1.5L/2L","f":"2.00 L BOUTEILLE","p":2.56,"s":"SOLPAK QB","d":"2022-06-29","pv":4.1,"n":3},{"a":"SPLASH GREN/CIT/EXO","f":"1.50 L PLAS","p":1.47,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2024-03-22","pv":2.8,"n":1},{"a":"SPLASH TPF","f":"50.00 CL BLLE","p":0.67,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2023-10-20","pv":1.6,"n":2},{"a":"SPRITE","f":"1.50 L BOUTEILLE","p":2.44,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":3.7,"n":4},{"a":"SPRITE","f":"50.00 CL BTL","p":1.06,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2026-04-24","pv":1.9,"n":4},{"a":"SPRITE CANETTE","f":"33.00 CL CANETTE","p":0.63,"s":"DIVERS FOURNISSEURS","d":"2025-07-21","pv":1.8,"n":3},{"a":"SPRITE/FANTA VERRE","f":"","p":0.7,"s":"RTF","d":"2025-09-12","pv":1.5,"n":1},{"a":"SULTAN TPF","f":"250.00 ML BOITE","p":0.98,"s":"DIVERS FOURNISSEURS","d":"2017-10-30","pv":2.1,"n":1},{"a":"TENSAI THE GLACE","f":"","p":1.84,"s":"DISTRI PROXI OI vincent","d":"2024-08-07","pv":2.8,"n":1},{"a":"TEZI GRAND MODELE","f":"","p":2.27,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-08-01","pv":4.5,"n":1},{"a":"TEZI TEA CITRON","f":"50.00 CL BOUT.","p":1.13,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2019-09-13","pv":2.0,"n":2},{"a":"TEZI TEA LETCHI","f":"","p":0.98,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2024-03-08","pv":2.0,"n":2},{"a":"TEZI TEA MANGUE","f":"","p":1.22,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2024-10-11","pv":2.0,"n":3},{"a":"TEZI TEA MELON","f":"","p":1.22,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-01-24","pv":2.0,"n":2},{"a":"TEZI TEA PECHE","f":"50.00 CL BOUT.","p":1.22,"s":"BRASSERIE DE BOURBON ALIETTE SAUTRON","d":"2025-01-24","pv":2.5,"n":2},{"a":"THE GLACE POKKA TPF","f":"50.00 CL PET","p":1.1,"s":"SOLO IMPORT","d":"2021-06-14","pv":2.5,"n":3},{"a":"THE LIPTON GREEN SLIM","f":"33.00 CL BTE*","p":0.94,"s":"RTF","d":"2026-03-17","pv":1.9,"n":4},{"a":"THE POKKA","f":"1.50 L BOUTEILLE","p":3.53,"s":"SUPERCASH","d":"2023-12-19","pv":4.9,"n":2},{"a":"VICHY CELESTINS","f":"1.15 L BOUTEILLE","p":1.42,"s":"RTF","d":"2026-04-08","pv":2.9,"n":4},{"a":"VINUT BUBBLE TEA TPF","f":"320.00 ML BTE*","p":1.02,"s":"DISTRI PROXI OI vincent","d":"2025-12-10","pv":2.1,"n":2},{"a":"VITTEL","f":"","p":0.71,"s":"RTF","d":"2026-04-21","pv":1.4,"n":1},{"a":"VITTEL BOUCHON SPORT","f":"75.00 CL BOUT PLA","p":0.85,"s":"RTF","d":"2025-12-08","pv":1.8,"n":1},{"a":"WEIDER POWER","f":"50.00 CL BOUT P","p":1.94,"s":"DISTRI PROXI OI vincent","d":"2023-04-20","pv":3.7,"n":1},{"a":"XL ENERGY","f":"1.00 L BOUTEILL","p":2.81,"s":"SOGEREP","d":"2026-04-23","pv":5.2,"n":2},{"a":"XL ENERGY","f":"25.00 CL CANETTE","p":1.17,"s":"SOGEREP","d":"2026-04-23","pv":2.9,"n":4},{"a":"ZINGI SODA","f":"","p":1.3,"s":"WINARUN SARL","d":"2024-10-22","pv":2.5,"n":1}];
+
 const FAM_COLORS=['#4f8ef7','#10b981','#f59e0b','#a78bfa','#ef4444','#06b6d4','#ec4899','#84cc16','#f97316','#8b5cf6','#14b8a6','#fb7185'];
 const EXCLU=['CARBURANTS','CARBURANT','LOTO TIRAGE','LOTO GRATTAGE','JEUX GRATTAGE','CAFE','ADBLUE','PRESTATIONS','PRESSE','TELECARTE','CHARBON','CHARBONS'];
 const OPPS=[
@@ -183,7 +238,11 @@ const OPPS=[
   {n:'Granini Jus 25cl',f:'Famobra (Allemagne)',pl:1.009,crr:0.785,mg:0.224,pct:22.2},
   {n:'Red Bull 25cl',f:'Big Brands (Pologne)',pl:1.628,crr:1.485,mg:0.143,pct:8.8},
 ];
-let AD={};let AS='all';let PC=null,MC=null;
+
+// Stop words pour matching
+const STOP=new Set(['TPF','BTE','BOUT','BOUTEILLE','CL','ML','BOITE','UNITE','SACHET','FLACON','U','BIDON','BOCAL','CAN','CANETTE','CANNETTE','PACK','DUO','BLISTER','PLAQUETTE','POCHETTE','CARTON','LOT','UNITES','GR','G','KG','LITRE','LITRES','GRAMME','PIECE','PIECES','PCS','PC','MORCEAU','BTEILLE','BTL','TEUR']);
+
+let AD={};let AS='all';let PC=null,MC=null;let ROT=3;
 const f0=n=>new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(n);
 const fE=n=>'€'+new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(n);
 const fE2=n=>'€'+new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
@@ -196,6 +255,49 @@ dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over
 function handleFiles(files){Array.from(files).forEach(f=>{const r=new FileReader();r.onload=e=>parseXL(e.target.result,f.name);r.readAsArrayBuffer(f)});}
 
 function detectSt(name){const n=name.toUpperCase();if(n.includes('OLA'))return'ola';if(n.includes('TOTAL'))return'total';if(n.includes('VITO'))return'vito';return'st'+Date.now();}
+
+// ============ MATCHING ALGORITHM ============
+function normalize(s){
+  if(!s)return'';
+  return String(s).toUpperCase().replace(/[^\w\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function keywords(name){
+  const norm=normalize(name);
+  const out=[];
+  for(const w of norm.split(' ')){
+    if(STOP.has(w))continue;
+    if(/^\d+$/.test(w))continue;
+    if(w.length<2)continue;
+    if(/^\d+[A-Z]+\d*$/.test(w))continue;
+    if(/^[A-Z]\d+/.test(w)&&w.length<=4)continue;
+    out.push(w);
+  }
+  return out;
+}
+// Pré-calculer les keywords de chaque produit du référentiel
+PRIX_REF.forEach(p=>{
+  p._kw=new Set(keywords((p.a||'')+' '+(p.f||'')));
+});
+
+function findMatch(venteName){
+  const vKw=new Set(keywords(venteName));
+  if(vKw.size===0)return null;
+  let best=null,bestScore=0;
+  for(const p of PRIX_REF){
+    if(!p._kw||p._kw.size===0)continue;
+    let common=0;
+    for(const k of p._kw)if(vKw.has(k))common++;
+    if(common===0)continue;
+    const scoreP=common/p._kw.size;
+    const scoreV=common/vKw.size;
+    const score=(scoreP+scoreV)/2;
+    if(scoreP>=0.7&&score>bestScore){
+      bestScore=score;
+      best=p;
+    }
+  }
+  return bestScore>=0.5?best:null;
+}
 
 function parseXL(buf,fname){
   try{
@@ -216,21 +318,25 @@ function parseXL(buf,fname){
         const art=row[3].toString().trim();
         const qte=parseFloat(row[4])||0;const rev=parseFloat(row[5])||0;
         const ca=parseFloat(row[6])||0;const mg=parseFloat(row[8])||0;
-        if(qte>0&&ca>0)arts.push({article:art,qte,revient:rev,ca,marge:mg,margePct:ca>0?mg/ca*100:0});
+        if(qte>0&&ca>0){
+          // Match au référentiel
+          const m=findMatch(art);
+          arts.push({article:art,qte,revient:rev,ca,marge:mg,margePct:ca>0?mg/ca*100:0,match:m});
+        }
       }
     });
     const st=detectSt(fname);
     AD[st]={familles:fams,articles:arts,fname};
-    addFileUI(fname,fams.length>0?'ok':'err',fams.length);
+    addFileUI(fname,fams.length>0?'ok':'err',fams.length,arts.filter(a=>a.match).length);
     if(Object.keys(AD).length>=1)document.getElementById('analyzeBtn').classList.add('show');
-  }catch(e){addFileUI(fname,'err',0);console.error(e);}
+  }catch(e){addFileUI(fname,'err',0,0);console.error(e);}
 }
 
-function addFileUI(name,status,rows){
+function addFileUI(name,status,rows,matched){
   const fl=document.getElementById('filesLoaded');
   const id='fi_'+name.replace(/\W/g,'');
   const ex=document.getElementById(id);
-  const html=`<div class="file-item" id="${id}"><span>${status==='ok'?'✅':'❌'}</span><span class="file-name">${name}</span><span class="file-status ${status==='ok'?'st-ok':'st-err'}">${status==='ok'?rows+' familles':'Erreur'}</span></div>`;
+  const html=`<div class="file-item" id="${id}"><span>${status==='ok'?'✅':'❌'}</span><span class="file-name">${name}</span>${matched>0?`<span class="match-tag">${matched} matchés</span>`:''}<span class="file-status ${status==='ok'?'st-ok':'st-err'}">${status==='ok'?rows+' familles':'Erreur'}</span></div>`;
   if(ex)ex.outerHTML=html;else fl.insertAdjacentHTML('beforeend',html);
 }
 
@@ -245,7 +351,10 @@ function getData(){
     const mf={};const ma={};
     Object.values(AD).forEach(d=>{
       d.familles.forEach(r=>{if(!mf[r.famille])mf[r.famille]={famille:r.famille,qte:0,revient:0,ca:0,marge:0};mf[r.famille].qte+=r.qte;mf[r.famille].revient+=r.revient;mf[r.famille].ca+=r.ca;mf[r.famille].marge+=r.marge;});
-      (d.articles||[]).forEach(r=>{if(!ma[r.article])ma[r.article]={article:r.article,qte:0,ca:0,marge:0};ma[r.article].qte+=r.qte;ma[r.article].ca+=r.ca;ma[r.article].marge+=r.marge;});
+      (d.articles||[]).forEach(r=>{
+        if(!ma[r.article])ma[r.article]={article:r.article,qte:0,ca:0,marge:0,match:r.match};
+        ma[r.article].qte+=r.qte;ma[r.article].ca+=r.ca;ma[r.article].marge+=r.marge;
+      });
     });
     return{
       familles:Object.values(mf).map(r=>({...r,margePct:r.ca>0?r.marge/r.ca*100:0})),
@@ -253,6 +362,14 @@ function getData(){
     };
   }
   return AD[AS]||{familles:[],articles:[]};
+}
+
+function setRot(n,btn){
+  ROT=n;
+  document.querySelectorAll('.rot-btn').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  document.getElementById('rotLabel').textContent=n+' mois';
+  if(document.getElementById('dashboard').style.display==='block')renderAll();
 }
 
 function renderAll(){
@@ -264,24 +381,61 @@ function renderAll(){
   const tQt=fams.reduce((s,f)=>s+f.qte,0);
   const tRev=fams.reduce((s,f)=>s+f.revient,0);
   const avgMg=tCA>0?tMg/tCA*100:0;
+  
+  const excluArt=/CARBURANT|GAZOLE|SANS PLOMB|GNR|ADBLUE/i;
+  const artImp=arts.filter(a=>!excluArt.test(a.article));
+  const matched=artImp.filter(a=>a.match);
+  const matchedCA=matched.reduce((s,a)=>s+a.ca,0);
+  const matchedCoverage=artImp.length>0?(matched.length/artImp.length*100):0;
+  
+  // Budget réassort total pour ROT mois
+  let budgetTot=0;
+  matched.forEach(a=>{
+    const qteRot=a.qte/12*ROT;
+    budgetTot+=qteRot*a.match.p;
+  });
 
   document.getElementById('kpiGrid').innerHTML=`
     <div class="kpi" style="animation-delay:.05s"><div class="kpi-ico">💰</div><div class="kpi-l">CA HT total</div><div class="kpi-v" style="color:#4f8ef7">${fE(tCA)}</div><span class="kpi-delta db">${AS==='all'?'3 stations':AS.toUpperCase()}</span></div>
     <div class="kpi" style="animation-delay:.1s"><div class="kpi-ico">📈</div><div class="kpi-l">Marge brute</div><div class="kpi-v" style="color:#10b981">${fE(tMg)}</div><span class="kpi-delta dg">${avgMg.toFixed(1)}%</span></div>
     <div class="kpi" style="animation-delay:.15s"><div class="kpi-ico">📦</div><div class="kpi-l">Unités vendues</div><div class="kpi-v">${f0(tQt)}</div><span class="kpi-delta db">tous produits</span></div>
-    <div class="kpi" style="animation-delay:.2s"><div class="kpi-ico">💸</div><div class="kpi-l">Coût achat</div><div class="kpi-v" style="color:#f59e0b">${fE(tRev)}</div><span class="kpi-delta db">${tCA>0?(tRev/tCA*100).toFixed(1):0}% du CA</span></div>
-    <div class="kpi" style="animation-delay:.25s"><div class="kpi-ico">🏷</div><div class="kpi-l">Familles actives</div><div class="kpi-v">${fams.length}</div><span class="kpi-delta db">catégories</span></div>
+    <div class="kpi gold" style="animation-delay:.2s"><div class="kpi-ico">📋</div><div class="kpi-l">Couverture référentiel</div><div class="kpi-v" style="color:var(--gold)">${matched.length}</div><span class="kpi-delta dgold">${matchedCoverage.toFixed(1)}% articles matchés</span></div>
+    <div class="kpi gold" style="animation-delay:.25s"><div class="kpi-ico">🛒</div><div class="kpi-l">Budget réassort ${ROT} mois</div><div class="kpi-v" style="color:var(--gold)">${fE(budgetTot)}</div><span class="kpi-delta dgold">prix d'achat actuels</span></div>
   `;
 
-  const excluArt=/CARBURANT|GAZOLE|SANS PLOMB|GNR|ADBLUE/i;
-  const tv=arts.filter(a=>!excluArt.test(a.article)).sort((a,b)=>b.qte-a.qte).slice(0,10);
+  // Top volume avec prix achat
+  const tv=artImp.sort((a,b)=>b.qte-a.qte).slice(0,10);
   const mv=tv[0]?.qte||1;
-  document.getElementById('topVol').innerHTML=tv.map((a,i)=>`<div class="prod-row"><span class="prod-rank">${i+1}</span><span class="prod-name">${a.article.substring(0,36)}</span><div class="prod-bar"><div class="prod-bar-f" style="width:${a.qte/mv*100}%;background:#4f8ef7"></div></div><span class="prod-val" style="color:#4f8ef7">${f0(a.qte)}</span></div>`).join('');
+  document.getElementById('topVol').innerHTML=tv.map((a,i)=>`
+    <div class="prod-row">
+      <span class="prod-rank">${i+1}</span>
+      <div style="flex:1;min-width:0">
+        <div class="prod-name">${a.article.substring(0,42)}</div>
+        ${a.match?`<div style="font-size:9px;color:var(--gold);font-weight:600;margin-top:1px">📋 ${a.match.s.substring(0,30)}</div>`:'<div class="no-match">non matché</div>'}
+      </div>
+      <div class="prod-bar"><div class="prod-bar-f" style="width:${a.qte/mv*100}%;background:#4f8ef7"></div></div>
+      <span class="prod-val" style="color:#4f8ef7">${f0(a.qte)}</span>
+      <span class="prod-px">${a.match?fE2(a.match.p):'—'}</span>
+    </div>`).join('');
 
-  const tm=arts.filter(a=>!excluArt.test(a.article)).sort((a,b)=>b.marge-a.marge).slice(0,10);
+  // Top marge avec prix achat
+  const tm=artImp.sort((a,b)=>b.marge-a.marge).slice(0,10);
   const mm=tm[0]?.marge||1;
-  document.getElementById('topMg').innerHTML=tm.map((a,i)=>`<div class="prod-row"><span class="prod-rank">${i+1}</span><span class="prod-name">${a.article.substring(0,36)}</span><div class="prod-bar"><div class="prod-bar-f" style="width:${a.marge/mm*100}%;background:#10b981"></div></div><span class="prod-val" style="color:#10b981">${fE(a.marge)}</span></div>`).join('');
+  document.getElementById('topMg').innerHTML=tm.map((a,i)=>`
+    <div class="prod-row">
+      <span class="prod-rank">${i+1}</span>
+      <div style="flex:1;min-width:0">
+        <div class="prod-name">${a.article.substring(0,42)}</div>
+        ${a.match?`<div style="font-size:9px;color:var(--gold);font-weight:600;margin-top:1px">📋 ${a.match.s.substring(0,30)} · ${fE2(a.match.p)}</div>`:'<div class="no-match">non matché</div>'}
+      </div>
+      <div class="prod-bar"><div class="prod-bar-f" style="width:${a.marge/mm*100}%;background:#10b981"></div></div>
+      <span class="prod-val" style="color:#10b981">${fE(a.marge)}</span>
+    </div>`).join('');
 
+  // ===== PLAN DE RÉASSORT =====
+  renderReassort(matched);
+
+  // Familles
   const fs=fams.sort((a,b)=>b.ca-a.ca).slice(0,12);
   const mc=fs[0]?.ca||1;
   document.getElementById('famRows').innerHTML=fs.map((f,i)=>`<div class="fam-row"><div class="fam-dot" style="background:${FAM_COLORS[i%FAM_COLORS.length]}"></div><span class="fam-name">${f.famille}</span><div class="fam-bar"><div class="fam-bar-f" style="width:${f.ca/mc*100}%;background:${FAM_COLORS[i%FAM_COLORS.length]}"></div></div><span class="fam-ca">${fE(f.ca)}</span><span class="fam-mg" style="color:${f.margePct>40?'#10b981':f.margePct>20?'#f59e0b':'#94a3b8'}">${f.margePct.toFixed(1)}%</span></div>`).join('');
@@ -310,6 +464,90 @@ function renderAll(){
     const gain=a?Math.round(a.qte*o.mg):null;
     return`<div class="prod-row"><span class="prod-rank">${i+1}</span><div style="flex:1"><div style="font-size:12px;font-weight:700">${o.n}</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">${o.f} · PV local ${fE2(o.pl)} → CRR ${fE2(o.crr)}</div></div>${a?`<span style="font-family:var(--mono);font-size:11px;color:#94a3b8;margin-right:8px">${f0(a.qte)} un.</span>`:''}${gain?`<span style="font-family:var(--mono);font-size:12px;font-weight:700;color:#10b981">+${fE(gain)}/an</span>`:`<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:#10b981">+${fE2(o.mg)}/u (${o.pct}%)</span>`}</div>`;
   }).join('');
+}
+
+function renderReassort(matched){
+  // Agréger par fiche produit du référentiel (au cas où plusieurs articles vendus matchent la même fiche)
+  const agg={};
+  matched.forEach(a=>{
+    const k=a.match.a+'|'+a.match.f;
+    if(!agg[k])agg[k]={ref:a.match,qte:0,ca:0,marge:0,sources:[]};
+    agg[k].qte+=a.qte;
+    agg[k].ca+=a.ca;
+    agg[k].marge+=a.marge;
+    agg[k].sources.push(a.article);
+  });
+  // Calculer le réassort
+  const rows=Object.values(agg).map(g=>{
+    const qteAnn=g.qte;
+    const qteRot=qteAnn/12*ROT;
+    const budget=qteRot*g.ref.p;
+    return{
+      ref:g.ref,
+      qteAnn,
+      qteRot:Math.ceil(qteRot),
+      budget,
+      prixUnit:g.ref.p,
+      pvTtc:g.ref.pv,
+      ca:g.ca,
+      marge:g.marge,
+      margePct:g.ca>0?(g.marge/g.ca*100):0
+    };
+  });
+  rows.sort((a,b)=>b.budget-a.budget);
+
+  // Résumé top
+  const totalBudget=rows.reduce((s,r)=>s+r.budget,0);
+  const totalQte=rows.reduce((s,r)=>s+r.qteRot,0);
+  const totalCA=rows.reduce((s,r)=>s+r.ca,0);
+  const totalMg=rows.reduce((s,r)=>s+r.marge,0);
+  // Par fournisseur
+  const byFourn={};
+  rows.forEach(r=>{
+    const f=r.ref.s||'?';
+    if(!byFourn[f])byFourn[f]={budget:0,nb:0};
+    byFourn[f].budget+=r.budget;
+    byFourn[f].nb++;
+  });
+  const topFourn=Object.entries(byFourn).sort((a,b)=>b[1].budget-a[1].budget)[0];
+
+  document.getElementById('reassortSummary').innerHTML=`
+    <div class="sum-box"><div class="sum-lbl">Articles à réassortir</div><div class="sum-val" style="color:var(--gold)">${rows.length}</div></div>
+    <div class="sum-box"><div class="sum-lbl">Quantité totale (${ROT}m)</div><div class="sum-val" style="color:#4f8ef7">${f0(totalQte)} u.</div></div>
+    <div class="sum-box"><div class="sum-lbl">Budget achat HT</div><div class="sum-val" style="color:#10b981">${fE(totalBudget)}</div></div>
+    <div class="sum-box"><div class="sum-lbl">CA généré (annualisé)</div><div class="sum-val">${fE(totalCA)}</div></div>
+    <div class="sum-box"><div class="sum-lbl">Marge brute (an)</div><div class="sum-val" style="color:#10b981">${fE(totalMg)}</div></div>
+    ${topFourn?`<div class="sum-box"><div class="sum-lbl">Top fournisseur (budget)</div><div class="sum-val" style="font-size:13px;color:var(--gold)">${topFourn[0].substring(0,18)}</div><div style="font-size:9px;color:#94a3b8;margin-top:2px">${fE(topFourn[1].budget)} · ${topFourn[1].nb} art.</div></div>`:''}
+  `;
+
+  // Table
+  document.getElementById('reassortTable').innerHTML=`
+    <thead><tr>
+      <th style="width:30px">#</th>
+      <th>Produit (référentiel)</th>
+      <th>Fournisseur actuel</th>
+      <th class="num">Vendu/an</th>
+      <th class="num">Qté ${ROT}m</th>
+      <th class="num">Prix achat HT</th>
+      <th class="num">Budget HT</th>
+      <th class="num">PV TTC</th>
+      <th class="num">Marge %</th>
+    </tr></thead>
+    <tbody>
+    ${rows.slice(0,50).map((r,i)=>`
+      <tr>
+        <td style="font-family:var(--mono);color:var(--text3);font-size:10px">${i+1}</td>
+        <td><div class="reassort-prod">${r.ref.a}</div><div class="reassort-fmt">${r.ref.f||''}</div></td>
+        <td><div class="reassort-fourn">${r.ref.s||'—'}</div><div style="font-size:9px;color:var(--text3)">dernier achat ${r.ref.d||'—'}</div></td>
+        <td class="num">${f0(r.qteAnn)}</td>
+        <td class="num reassort-qty">${f0(r.qteRot)}</td>
+        <td class="num reassort-px">${fE2(r.prixUnit)}</td>
+        <td class="num reassort-budg">${fE(r.budget)}</td>
+        <td class="num" style="color:#94a3b8">${r.pvTtc?fE2(r.pvTtc):'—'}</td>
+        <td class="num" style="color:${r.margePct>40?'#10b981':r.margePct>20?'#f59e0b':'#94a3b8'}">${r.margePct.toFixed(1)}%</td>
+      </tr>`).join('')}
+    </tbody>
+  `;
 }
 
 function filterSt(st,btn){
